@@ -1,4 +1,4 @@
-<x-guest-layout>
+<x-layouts.guest>
     <form method="POST" action="{{ route('password.store') }}">
         @csrf
 
@@ -21,7 +21,7 @@
 
         <!-- Confirm Password -->
         <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+            <x-input-label for="password_confirmation" :value="__('Повторите пароль')" />
 
             <x-text-input id="password_confirmation" class="block mt-1 w-full"
                                 type="password"
@@ -32,8 +32,8 @@
 
         <div class="flex items-center justify-end mt-4">
             <x-primary-button>
-                {{ __('Reset Password') }}
+                {{ __('Сбросить пароль') }}
             </x-primary-button>
         </div>
     </form>
-</x-guest-layout>
+</x-layouts.guest>
