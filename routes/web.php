@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DictionaryController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,5 +35,7 @@ Route::resource('/dictionary', DictionaryController::class)
 ->middleware(['auth', 'verified'])->name('index', 'dictionary');
 
 //Route::name("dictionary")->get('/dictionary', [DictionaryController::class, 'index']);
+
+Route::get('/tags', [TagController::class,'index']);
 
 require __DIR__.'/auth.php';
