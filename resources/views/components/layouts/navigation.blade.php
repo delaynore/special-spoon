@@ -41,7 +41,6 @@
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Профиль') }}
                         </x-dropdown-link>
-
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
@@ -54,6 +53,8 @@
                         </form>
                     </x-slot>
                 </x-dropdown>
+                <!-- Theme switcher -->
+                <x-theme-toggle class="ms-3"/>
             </div>
 
             <!-- Hamburger -->
