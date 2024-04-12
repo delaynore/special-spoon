@@ -1,4 +1,5 @@
-<x-layouts.app>
+<x-layout.main>
+    <x-slot name="navigation"></x-slot>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Профиль') }}
@@ -26,4 +27,4 @@
             </div>
         </div>
     </div>
-</x-layouts.app>
+</x-layout.main>

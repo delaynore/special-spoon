@@ -16,13 +16,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get("contact", function () {
+    return view("components.pages.contact");
+})->name('contact');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get("/about", function () {
+    return view("components.pages.about");
+})->name('about');
+
+Route::get('/', function () {
+    return view('components.pages.home');
+})->name('home');
+
+
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -32,7 +41,7 @@ Route::middleware('auth')->group(function () {
 
 
 Route::resource('/dictionary', DictionaryController::class)
-->middleware(['auth', 'verified'])->name('index', 'dictionary');
+->middleware(['auth', 'verified'])->name('index', 'my');
 
 //Route::name("dictionary")->get('/dictionary', [DictionaryController::class, 'index']);
 
