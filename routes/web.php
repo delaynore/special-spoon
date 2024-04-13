@@ -24,6 +24,9 @@ Route::get("/about", function () {
     return view("components.pages.about");
 })->name('about');
 
+Route::get("/home", function () {
+    return view("components.pages.home");
+})->name('home');
 Route::get('/', function () {
     return view('components.pages.home');
 })->name('home');
@@ -39,9 +42,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-
-Route::resource('/dictionary', DictionaryController::class)
-->middleware(['auth', 'verified'])->name('index', 'my');
+Route::resource('/my', DictionaryController::class)
+->middleware(['auth', 'verified'])
+    ->name('index', 'my')
+    ->name('store', 'dictionary.store')
+    ->name('edit', 'dictionary.edit')
+    ->name('destroy', 'dictionary.destroy')
+    ->name('update', 'dictionary.update');
 
 //Route::name("dictionary")->get('/dictionary', [DictionaryController::class, 'index']);
 

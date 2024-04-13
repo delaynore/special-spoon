@@ -16,8 +16,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $name
  * @property string $description
  * @property Visibility $visibility
- * @property Carbon $createdAt
- * @property Carbon $updatedAt
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property string $fk_user_id
  */
 class Dictionary extends Model
 {
@@ -47,6 +48,7 @@ class Dictionary extends Model
         'name',
         'description',
         'visibility',
+        'fk_user_id',
     ];
 
     /**

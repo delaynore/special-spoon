@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Visibility;
+use App\Models\Dictionary;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules\Enum;
 use Illuminate\View\View;
 
 class DictionaryController extends Controller
@@ -12,7 +15,8 @@ class DictionaryController extends Controller
      */
     public function index() : \Illuminate\Contracts\View\View
     {
-        return view('dictionary.index');
+        $dictionaries = Dictionary::where('fk_user_id', '=', auth()->user()->id)->orderBy('updated_at', 'desc')->get();
+        return view('dictionary.index', ['dictionaries' => $dictionaries]);
     }
 
     /**
@@ -20,7 +24,7 @@ class DictionaryController extends Controller
      */
     public function create()
     {
-        //
+        // return view('dictionary.create');
     }
 
     /**
@@ -28,7 +32,22 @@ class DictionaryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|max:50',
+            'description' => 'max:500',
+            'visibility' => [new Enum(Visibility::class)],
+        ]);
+
+        $dictionary = Dictionary::create([
+            'name' => $validated['name'],
+            'description' => $validated['description'],
+            'visibility' => $validated['visibility'],
+            'fk_user_id' => $request->user()->id,
+        ]);
+
+        $dictionary->save();
+
+        return redirect('/my');
     }
 
     /**
@@ -44,7 +63,8 @@ class DictionaryController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        return view('dictionary.edit',
+            ['dict' => Dictionary::where('fk_user_id', '=', auth()->user()->id)->findOrFail($id)]);
     }
 
     /**
@@ -52,7 +72,21 @@ class DictionaryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|max:50',
+            'description' => 'max:500',
+            'visibility' => [new Enum(Visibility::class)],
+        ]);
+
+        $dictionary = Dictionary::where('fk_user_id', '=', auth()->user()->id)->findOrFail($id);
+
+        $dictionary->name = $validated['name'];
+        $dictionary->description = $validated['description'];
+        $dictionary->visibility = $validated['visibility'];
+
+        $dictionary->save();
+
+        return redirect('/my');
     }
 
     /**
@@ -60,6 +94,6 @@ class DictionaryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        return redirect('/my');
     }
 }

@@ -1,4 +1,4 @@
-<nav class="bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700">
+<nav class="bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700 ">
     <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <a href="{{ route('home') }}" class="flex items-center space-x-3 rtl:space-x-reverse">
             <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
