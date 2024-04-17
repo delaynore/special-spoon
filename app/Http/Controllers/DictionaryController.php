@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\Visibility;
+use App\Models\Concept;
 use App\Models\Dictionary;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -62,8 +63,10 @@ class DictionaryController extends Controller
      */
     public function show(string $id) : View
     {
+        $dict = Dictionary::where('fk_user_id', '=', auth()->user()->id)->findOrFail($id);
         return view('dictionary.show',
-            ['dict' => Dictionary::where('fk_user_id', '=', auth()->user()->id)->findOrFail($id)]);
+            ['dict' => $dict,
+        'concept' => $dict->rootConcept()]);
     }
 
     /**

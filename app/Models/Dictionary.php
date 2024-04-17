@@ -41,6 +41,7 @@ class Dictionary extends Model
 
     public function rootConcept() : Concept
     {
+        // TODO: check if dict is empty
         return $this->concepts()->oldest('created_at')->first();
     }
 

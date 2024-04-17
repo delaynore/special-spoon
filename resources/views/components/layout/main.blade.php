@@ -32,7 +32,7 @@
 </head>
 
 <body class="font-sans antialiased">
-    <div class="flex flex-col justify-between min-h-screen bg-gray-100 dark:bg-gray-900">
+    <div class="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900">
         @if (isset($navigation))
             @include('components.navigation.navbar')
         @endif
@@ -47,7 +47,7 @@
         @endif -->
 
         <!-- Page Content -->
-        <main>
+        <main class="flex-grow">
             @if (isset($slot))
             {{ $slot }}
             @endif
