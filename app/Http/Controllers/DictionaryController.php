@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Enums\Visibility;
 use App\Models\Dictionary;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 use Illuminate\View\View;
 
@@ -13,10 +16,14 @@ class DictionaryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index() : \Illuminate\Contracts\View\View
+    public function index() : View
     {
-        $dictionaries = Dictionary::where('fk_user_id', '=', auth()->user()->id)->orderBy('updated_at', 'desc')->get();
-        return view('dictionary.index', ['dictionaries' => $dictionaries]);
+
+        $dictionaries = Dictionary::where('fk_user_id', '=', auth()->user()->id);
+        if (isset($_REQUEST['search'])) {
+            $dictionaries = $dictionaries->where('name', 'like', '%' . $_REQUEST['search'] . '%');
+        }
+        return view('dictionary.index', ['dictionaries' => $dictionaries->orderBy('updated_at', 'desc')->get()]);
     }
 
     /**
@@ -30,10 +37,10 @@ class DictionaryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request) : RedirectResponse
     {
         $validated = $request->validate([
-            'name' => 'required|max:50',
+            'name' => ['required', 'max:50', Rule::notIn(Dictionary::where('fk_user_id', '=', auth()->user()->id)->pluck('name'))],
             'description' => 'max:500',
             'visibility' => [new Enum(Visibility::class)],
         ]);
@@ -53,15 +60,16 @@ class DictionaryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id) : View
     {
-        //
+        return view('dictionary.show',
+            ['dict' => Dictionary::where('fk_user_id', '=', auth()->user()->id)->findOrFail($id)]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id) : View
     {
         return view('dictionary.edit',
             ['dict' => Dictionary::where('fk_user_id', '=', auth()->user()->id)->findOrFail($id)]);
@@ -70,10 +78,10 @@ class DictionaryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id) : RedirectResponse
     {
         $validated = $request->validate([
-            'name' => 'required|max:50',
+            'name' => ['required', 'max:50', Rule::notIn(Dictionary::where('fk_user_id', '=', auth()->user()->id)->pluck('name'))],
             'description' => 'max:500',
             'visibility' => [new Enum(Visibility::class)],
         ]);
@@ -92,8 +100,12 @@ class DictionaryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id) : RedirectResponse
     {
+        $dictionary = Dictionary::findOrFail($id);
+
+        $dictionary->delete();
+
         return redirect('/my');
     }
 }

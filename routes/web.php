@@ -48,7 +48,8 @@ Route::resource('/my', DictionaryController::class)
     ->name('store', 'dictionary.store')
     ->name('edit', 'dictionary.edit')
     ->name('destroy', 'dictionary.destroy')
-    ->name('update', 'dictionary.update');
+    ->name('update', 'dictionary.update')
+    ->name('show', 'dictionary.show');
 
 //Route::name("dictionary")->get('/dictionary', [DictionaryController::class, 'index']);
 

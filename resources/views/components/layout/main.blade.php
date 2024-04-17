@@ -18,8 +18,10 @@
 
     <!-- Scripts -->
     <script>
+        const themeItemName = 'pradict-preferred-theme';
+
         // On page load or when changing themes, best to add inline in `head` to avoid FOUC
-        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        if (localStorage.getItem(themeItemName) === 'dark' || (!(themeItemName in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
         } else {
             document.documentElement.classList.remove('dark')
@@ -30,7 +32,7 @@
 </head>
 
 <body class="font-sans antialiased">
-    <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
+    <div class="flex flex-col justify-between min-h-screen bg-gray-100 dark:bg-gray-900">
         @if (isset($navigation))
             @include('components.navigation.navbar')
         @endif
@@ -50,6 +52,9 @@
             {{ $slot }}
             @endif
         </main>
+        <footer>
+            @include('components.footer.footer')
+        </footer>
     </div>
 </body>
 
