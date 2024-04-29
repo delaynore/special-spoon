@@ -1,4 +1,5 @@
 <x-layout.main>
+    <x-slot:title>{{ __('Профиль') }}</x-slot:title>
     <x-slot name="navigation"></x-slot>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">

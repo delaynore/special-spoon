@@ -63,10 +63,11 @@ class DictionaryController extends Controller
      */
     public function show(string $id) : View
     {
-        $dict = Dictionary::where('fk_user_id', '=', auth()->user()->id)->findOrFail($id);
+        $dictionary = Dictionary::where('fk_user_id', '=', auth()->user()->id)->findOrFail($id);
+
         return view('dictionary.show',
-            ['dict' => $dict,
-        'concept' => $dict->rootConcept()]);
+            ['dictionary' => $dictionary,
+        'concepts' => $dictionary->rootConcepts()]);
     }
 
     /**
@@ -75,25 +76,23 @@ class DictionaryController extends Controller
     public function edit(string $id) : View
     {
         return view('dictionary.edit',
-            ['dict' => Dictionary::where('fk_user_id', '=', auth()->user()->id)->findOrFail($id)]);
+            ['dictionary' => Dictionary::where('fk_user_id', '=', auth()->user()->id)->findOrFail($id)]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id) : RedirectResponse
+    public function update(Request $request, Dictionary $dictionary) : RedirectResponse
     {
+        // $dictionary = Dictionary::where('fk_user_id', '=', auth()->user()->id)->findOrFail($id);
         $validated = $request->validate([
-            'name' => ['required', 'max:50', Rule::notIn(Dictionary::where('fk_user_id', '=', auth()->user()->id)->pluck('name'))],
+            'name' => ['required', 'max:50', Rule::notIn(Dictionary::where('fk_user_id', '=', auth()->user()->id)->where('id', '!=',$dictionary->id)->pluck('name'))],
             'description' => 'max:500',
             'visibility' => [new Enum(Visibility::class)],
         ]);
 
-        $dictionary = Dictionary::where('fk_user_id', '=', auth()->user()->id)->findOrFail($id);
 
-        $dictionary->name = $validated['name'];
-        $dictionary->description = $validated['description'];
-        $dictionary->visibility = $validated['visibility'];
+        $dictionary->fill($validated);
 
         $dictionary->save();
 

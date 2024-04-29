@@ -1,4 +1,6 @@
 <x-layout.main>
+    <x-slot:title>{{ __('Сбросить пароль') }}</x-slot:title>
+
     <form method="POST" action="{{ route('password.store') }}">
         @csrf
 

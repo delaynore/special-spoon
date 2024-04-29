@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\ConceptController;
 use App\Http\Controllers\DictionaryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TagController;
+use App\Models\Concept;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -43,13 +45,22 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::resource('/my', DictionaryController::class)
-->middleware(['auth', 'verified'])
+    ->middleware(['auth', 'verified'])
     ->name('index', 'my')
     ->name('store', 'dictionary.store')
     ->name('edit', 'dictionary.edit')
     ->name('destroy', 'dictionary.destroy')
     ->name('update', 'dictionary.update')
     ->name('show', 'dictionary.show');
+
+Route::get('/my/{dictionary}/dashboard', [DictionaryController::class, 'show'])
+    ->name('dictionary.show');
+
+Route::resource('/my/{dictionary}/concept/', ConceptController::class)
+    ->middleware(['auth', 'verified'])
+    ->name('create', 'concept.create')
+    ->name('store', 'concept.store')
+    ->name('destroy', 'concept.destroy');
 
 //Route::name("dictionary")->get('/dictionary', [DictionaryController::class, 'index']);
 

@@ -39,10 +39,10 @@ class Dictionary extends Model
         return $this->hasMany(Concept::class, 'fk_dictionary_id');
     }
 
-    public function rootConcept() : Concept
+    public function rootConcepts()
     {
         // TODO: check if dict is empty
-        return $this->concepts()->oldest('created_at')->first();
+        return $this->concepts()->where('fk_parent_concept_id', null)->get();
     }
 
     protected $fillable = [

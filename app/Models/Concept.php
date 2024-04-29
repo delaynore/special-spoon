@@ -49,6 +49,7 @@ class Concept extends Model
         'name',
         'definition',
         'fk_dictionary_id',
+        'fk_parent_concept_id',
     ];
 
     protected $casts = [

@@ -1,4 +1,6 @@
 <x-layout.main>
+<x-slot:title>{{ __('Мои словари') }}</x-slot:title>
+
     <x-slot name="navigation"></x-slot>
     <section class="flex items-start">
         <div class="max-w-screen-xl px-4 mx-auto lg:px-12 w-full mt-3">
@@ -88,7 +90,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @each('dictionary.item', $dictionaries, 'dict')
+                            @each('dictionary.item', $dictionaries, 'dictionary')
                         </tbody>
                     </table>
                     @endisset

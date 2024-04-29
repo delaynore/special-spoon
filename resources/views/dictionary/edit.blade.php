@@ -18,20 +18,20 @@
                     </a>
                 </div>
                 <!-- Modal body -->
-                <form action="{{route('dictionary.update', $dict->id)}}" method="POST">
+                <form action="{{route('dictionary.update', $dictionary)}}" method="POST">
                     @csrf
                     @method('put')
                     <div class="grid gap-4 mb-4">
                         <div class="col-span-2">
                             <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ __('Название словаря')}}</label>
-                            <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Название словаря" value="{{$dict->name}}" required="">
+                            <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Название словаря" value="{{$dictionary->name}}" required="">
                             <x-input-error :messages="$errors->get('name')" class="mt-2" />
                         </div>
                         <div class="col-span-2">
                             <label for="visibility" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Видимость</label>
                             <select id="visibility" name="visibility" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                <option value="public" @selected($dict->visibility == App\Enums\Visibility::PUBLIC)>{{ __('Публичный') }}</option>
-                                <option value="private" @selected($dict->visibility == App\Enums\Visibility::PRIVATE)>{{ __('Приватный') }}</option>
+                                <option value="public" @selected($dictionary->visibility == App\Enums\Visibility::PUBLIC)>{{ __('Публичный') }}</option>
+                                <option value="private" @selected($dictionary->visibility == App\Enums\Visibility::PRIVATE)>{{ __('Приватный') }}</option>
                             </select>
                             <x-input-error :messages="$errors->get('visibility')" class="mt-2" />
                         </div>
@@ -43,9 +43,9 @@
                         </div>
                         <div class="sm:col-span-2">
                             <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ __('Описание')}}</label>
-                            <textarea id="description" name="description" rows="4" class="block p-2.5 w-full min-h-12 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="{{__('Опишите на какую тему будет словарь...')}}">{{$dict->description}}</textarea>
+                            <textarea id="description" name="description" rows="4" class="block p-2.5 w-full min-h-12 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="{{__('Опишите на какую тему будет словарь...')}}">{{$dictionary->description}}</textarea>
                         </div>
-                        <x-input-error :messages="$errors->get('description')" class="mt-2" />  
+                        <x-input-error :messages="$errors->get('description')" class="mt-2" />
                     </div>
                     <div class="inline-flex space-x-4">
                         <button type="submit" class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
@@ -54,7 +54,7 @@
                     </div>
                 </form>
                 <div class="inline-flex">
-                    <form action="{{route('dictionary.destroy', $dict->id)}}">
+                    <form action="{{route('dictionary.destroy', $dictionary->id)}}">
                         @csrf
                         @method('delete')
                         <button type="submit" class="text-red-600 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">
