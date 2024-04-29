@@ -1,14 +1,11 @@
 <!-- Управление словарем -->
 @props(['dictionary', 'concepts'])
 
-@php
-    session()->push('dictionary', $dictionary);
-@endphp
 
 <x-layout.main>
     <x-slot:title>{{ $dictionary->name }}</x-slot:title>
     <x-slot name="navigation"></x-slot>
-    <div class="flex flex-row px-4">
+    <div class="flex flex-row px-4 mt-2">
         @include('components.dashboard.sidebar.sidebar')
         <section class="flex-grow-10 pl-4 pr-4">
             <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
