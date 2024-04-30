@@ -70,4 +70,6 @@ Route::delete('/my/{dictionary}/concept/{concept}', [ConceptController::class, '
 
 Route::get('/tags', [TagController::class,'index']);
 
+Route::get('my/{dictionary}/export', [DictionaryController::class, 'export'])->name('dictionary.export');
+
 require __DIR__.'/auth.php';

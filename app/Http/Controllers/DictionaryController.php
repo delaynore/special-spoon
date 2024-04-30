@@ -7,7 +7,10 @@ use App\Models\Concept;
 use App\Models\Dictionary;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 use Illuminate\View\View;
@@ -110,5 +113,22 @@ class DictionaryController extends Controller
         $dictionary->delete();
 
         return redirect('/my');
+    }
+
+    public function export(string $id)
+    {
+        $dictionary = Dictionary::where('fk_user_id', '=', auth()->user()->id)->findOrFail($id);
+        $concepts = $dictionary->concepts()->pluck('name');
+        $conceptsString = '';
+        foreach ($concepts as $concept) {
+            $conceptsString .= $concept . "\n";
+        }
+        $fileContent = $conceptsString;
+        $fileName = Str::random(5);
+        Storage::disk('local')->put($fileName.'.txt', $fileContent);
+        /// файл сохраняется на диске, как то подумать надо его удалением
+        // потому что он может делаться часто и захламлять диск
+        // либо же перезаписывать и гдето хранить информацию поменялся ли список концептов
+        return Storage::download($fileName.'.txt');
     }
 }
