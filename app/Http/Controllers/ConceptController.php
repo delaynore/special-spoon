@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Concept;
 use App\Models\Dictionary;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
 class ConceptController extends Controller
@@ -60,9 +62,12 @@ class ConceptController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Concept $concept)
+    public function show(string $dictionary, string $concept)
     {
-        //
+        $concept = Concept::findOrFail($concept);
+        $dictionary = Dictionary::findOrFail($dictionary);
+        $concepts = $dictionary->rootConcepts();
+        return view('concept.show', compact('concept', 'dictionary', 'concepts'));
     }
 
     /**
@@ -84,15 +89,13 @@ class ConceptController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request,string $id)
+    public function destroy(Request $request, string $dictionaryId, string $conceptId)
     {
-        dd($request);
-        $concept = Concept::findOrFail($id);
-        $dict = $concept->fk_dictionary_id;
+        $concept = Concept::findOrFail($conceptId);
+        //Gate::authorize('delete', [Auth::user(), $concept]);
 
-        $concept->delete();
-        $concept->saveOrFail();
+        $concept->deleteOrFail();
 
-        return redirect(route('dictionary.show'), $dict);
+        return redirect()->back()->with('success', 'Concept deleted.');
     }
 }

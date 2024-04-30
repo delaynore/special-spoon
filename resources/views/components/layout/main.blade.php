@@ -47,7 +47,7 @@
         @endif -->
 
         <!-- Page Content -->
-        <main class="flex-grow">
+        <main class="flex-grow container">
             @if (isset($slot))
             {{ $slot }}
             @endif

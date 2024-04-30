@@ -5,11 +5,13 @@ $unique = Str::random(5);
 @endphp
 
 @if ($children->count() > 0)
-<h2 id="header-{{$concept->id}} " class="w-48">
-    <button type="button" class=" rounded-sm px-2 py-1 flex items-center justify-between w-full font-medium text-gray-500  dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800" data-accordion-target="#body-{{$concept->id}}" aria-expanded="false" aria-controls="body-{{$concept->id}}">
-        <span class="overflow-hidden text-ellipsis">{{$concept->name}}</span>
-        <x-tree-view.icon />
-    </button>
+<h2 id="header-{{$concept->id}} " class="w-full">
+    <div data-dropdown-trigger="click" data-dropdown-toggle="dropdown{{$concept->id}}" data-dropdown-placement="right" data-dropdown-offset-skidding="100">
+        <button type="button" class="flex border-2 border-gray-100 hover:border-gray-300  items-center justify-between w-full px-2 py-1 font-medium text-gray-500   dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-sm" data-accordion-target="#body-{{$concept->id}}" aria-expanded="false" aria-controls="body-{{$concept->id}}">
+            <span class="overflow-hidden text-ellipsis">{{$concept->name}}</span>
+            <x-tree-view.icon />
+        </button>
+    </div>
 </h2>
 <div id="body-{{$concept->id}}" class="hidden" aria-labelledby="header-{{$concept->id}}">
     <div class="ms-1 border-l-2">
@@ -24,7 +26,7 @@ $unique = Str::random(5);
 </div>
 @else
 
-<h2 class="ms-2 w-48">
+<h2 class="w-full">
     <div data-dropdown-trigger="click" data-dropdown-toggle="dropdown{{$concept->id}}" data-dropdown-placement="right" data-dropdown-offset-skidding="100" class="flex border-2 border-gray-100 hover:border-gray-300  items-center justify-between w-full px-2 py-1 font-medium text-gray-500  focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-sm">
         {{$concept->name}}
     </div>
@@ -45,8 +47,7 @@ $unique = Str::random(5);
             </a>
         </li>
         <li>
-            <form action="#" method="get">
-                @csrf
+            <form action="{{route('concept.show', ['dictionary' => $dictionary, 'concept' => $concept])}}" method="get">
                 <button type="submit" class="w-full flex items-center justify-between py-2 px-4 text-sm text-gray-700 hover:bg-gray-100  dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
                     Открыть
                     <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -73,7 +74,7 @@ $unique = Str::random(5);
         </a>
     </div>
     <div class="py-1">
-        <form action="{{route('concept.destroy', ['dictionary' => $dictionary, $concept->id])}}" method="post">
+        <form action="{{route('concept.destroy', [$dictionary ,$concept->id])}}" method="post">
             @csrf
             @method('delete')
             <button type="submit" class="w-full flex items-center justify-between py-2 px-4 text-sm text-gray-700 hover:bg-gray-100  dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">

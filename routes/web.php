@@ -62,6 +62,10 @@ Route::resource('/my/{dictionary}/concept/', ConceptController::class)
     ->name('store', 'concept.store')
     ->name('destroy', 'concept.destroy');
 
+Route::get('/my/{dictionary}/dashboard/{concept}/', [ConceptController::class, 'show'])
+->name('concept.show');
+Route::delete('/my/{dictionary}/concept/{concept}', [ConceptController::class, 'destroy']);
+
 //Route::name("dictionary")->get('/dictionary', [DictionaryController::class, 'index']);
 
 Route::get('/tags', [TagController::class,'index']);

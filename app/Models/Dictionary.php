@@ -41,7 +41,6 @@ class Dictionary extends Model
 
     public function rootConcepts()
     {
-        // TODO: check if dict is empty
         return $this->concepts()->where('fk_parent_concept_id', null)->get();
     }
 

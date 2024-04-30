@@ -2,9 +2,12 @@
 <tr class=" dark:border-gray-700 cursor-pointer">
     <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white {{$dictionary->visibility == \App\Enums\Visibility::PRIVATE ? 'flex items-center' : ''}}">{{ $dictionary->name}}
         @if ($dictionary->visibility == \App\Enums\Visibility::PRIVATE)
-        <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+        <span class="ml-2 bg-gray-900 rounded-full dark:bg-gray-200">
+        <svg class="m-1 w-3 h-3 dark:text-gray-800 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
             <path fill-rule="evenodd" d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z" clip-rule="evenodd" />
         </svg>
+        </span>
+
         @endif
     </th>
     <td class="px-4 py-3 max-w-48 overflow-hidden text-wrap text-ellipsis" title="{{ $dictionary->description}}">{{ $dictionary->description}}</td>

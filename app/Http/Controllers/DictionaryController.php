@@ -82,21 +82,22 @@ class DictionaryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Dictionary $dictionary) : RedirectResponse
+    public function update(Request $request, string $dictionaryId) : RedirectResponse
     {
-        // $dictionary = Dictionary::where('fk_user_id', '=', auth()->user()->id)->findOrFail($id);
+        $dictionary = Dictionary::where('fk_user_id', '=', auth()->user()->id)->findOrFail($dictionaryId);
+
         $validated = $request->validate([
-            'name' => ['required', 'max:50', Rule::notIn(Dictionary::where('fk_user_id', '=', auth()->user()->id)->where('id', '!=',$dictionary->id)->pluck('name'))],
+            'name' => ['required', 'max:50'],
             'description' => 'max:500',
             'visibility' => [new Enum(Visibility::class)],
         ]);
 
+        $dictionary->name = $validated['name'];
+        $dictionary->description = $validated['description'];
+        $dictionary->visibility = $validated['visibility'];
+        $dictionary->updateOrFail($validated);
 
-        $dictionary->fill($validated);
-
-        $dictionary->save();
-
-        return redirect('/my');
+        return redirect(route('my'));
     }
 
     /**
