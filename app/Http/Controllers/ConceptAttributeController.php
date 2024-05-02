@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Concept;
 use App\Models\ConceptAttribute;
 use App\Http\Requests\StoreConceptAttributeRequest;
 use App\Http\Requests\UpdateConceptAttributeRequest;
+use App\Models\Dictionary;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ConceptAttributeController extends Controller
 {
@@ -27,9 +31,21 @@ class ConceptAttributeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreConceptAttributeRequest $request)
+    public function store(Request $request, Dictionary $dictionary,Concept $concept)
     {
-        //
+
+
+        $validated = $request->validate([
+            'attribute' => 'required|uuid|exists:attributes,id'
+        ]);
+
+        $conceptAttribute = ConceptAttribute::create([
+            'fk_concept_id' => $concept->id,
+            'fk_attribute_id' => $validated['attribute'],
+        ]);
+
+        $conceptAttribute->saveOrFail();
+        return redirect()->back();
     }
 
     /**

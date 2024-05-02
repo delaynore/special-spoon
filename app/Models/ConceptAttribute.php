@@ -12,4 +12,9 @@ use Illuminate\Database\Eloquent\Model;
 class ConceptAttribute extends Model
 {
     use HasFactory, HasUuids;
+
+    protected $fillable = [
+        'fk_concept_id',
+        'fk_attribute_id',
+    ];
 }

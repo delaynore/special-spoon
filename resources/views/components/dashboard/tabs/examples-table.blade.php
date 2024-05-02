@@ -1,6 +1,6 @@
 
 @php
-    $attributes = \App\Models\Concept::all()->take(15);
+    $attributes = $concept->attributes()->get();
 @endphp
 
 <div class="flex justify-end my-2">
@@ -29,12 +29,16 @@
             </tr>
         </thead>
         <tbody>
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+        @foreach ($attributes as $attribute)
+        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                 <th scope="row" class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Название
+                    {{ $attribute->name }}
                 </th>
                 <td class="px-2 py-2">
-                    Тип данных
+                    {{ $attribute->description }}
+                </td>
+                <td class="px-2 py-2">
+                    {{ $attribute->description }}
                 </td>
                 <td class="px-2 py-2">
                     <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">{{ __('Изменить')}}</a>
@@ -43,6 +47,8 @@
                     <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline">{{ __('Удалить')}}</a>
                 </td>
             </tr>
+                @endforeach
+
         </tbody>
     </table>
 </div>

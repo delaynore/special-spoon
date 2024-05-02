@@ -72,7 +72,7 @@ return new class extends Migration
             $table->foreignUuid('fk_concept_id')->references('id')->on('concepts')->cascadeOnDelete();
             $table->foreignUuid('fk_attribute_id')->references('id')->on('attributes')->cascadeOnDelete();
             $table->timestampsTz();
-            $table->integer('group');
+            $table->integer('group')->nullable();
 
             $table->unique(['fk_concept_id', 'fk_attribute_id']);
         });

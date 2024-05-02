@@ -1,3 +1,7 @@
+@php
+    $attributes = $concept->attributes()->get();
+@endphp
+
 <div class="flex justify-end my-2">
     <a href="{{route('concept.attribute.create', [$dictionary, $concept])}}" class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
         <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -14,31 +18,28 @@
                     Название атрибута
                 </th>
                 <th scope="col" class="px-2 py-3">
-                    Тип данных
+                    {{ __('Тип') }}
                 </th>
                 <th scope="col" class="px-2 py-3">
-                    <span class="sr-only">Редактировать</span>
-                </th>
-                <th scope="col" class="px-2 py-3">
-                    <span class="sr-only">Удалить</span>
+                    <span class="sr-only">{{__('Убрать')}}</span>
                 </th>
             </tr>
         </thead>
         <tbody>
+            @foreach ($attributes as $attribute)
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                 <th scope="row" class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Название
+                    {{ $attribute->name}}
                 </th>
                 <td class="px-2 py-2">
-                    Тип данных
+                    {{ $attribute->type}}
                 </td>
                 <td class="px-2 py-2">
-                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">{{ __('Изменить')}}</a>
-                </td>
-                <td class="px-2 py-2">
-                    <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline">{{ __('Удалить')}}</a>
+                    <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline">{{ __('Убрать')}}</a>
                 </td>
             </tr>
+            @endforeach
+
         </tbody>
     </table>
 </div>
