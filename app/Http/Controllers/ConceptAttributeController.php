@@ -19,9 +19,9 @@ class ConceptAttributeController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(string $dictionary, string $concept)
     {
-        //
+        return view('concept-attribute.create', compact('dictionary', 'concept'));
     }
 
     /**

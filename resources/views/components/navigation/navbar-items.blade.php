@@ -19,8 +19,8 @@
                     <x-navigation.secondary-item href="{{route('profile.edit')}}">
                         {{ __('Настройки') }}
                     </x-navigation.secondary-item>
-                    <x-navigation.secondary-item>
-                        {{ __('Dashboard') }}
+                    <x-navigation.secondary-item href="{{route('attribute.index')}}">
+                        {{ __('Атрибуты') }}
                     </x-navigation.secondary-item>
                     <x-navigation.secondary-item>
                         {{ __('Dashboard') }}

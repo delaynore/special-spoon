@@ -25,7 +25,7 @@ class ConceptController extends Controller
     public function create(Dictionary $dictionary)
     {
 
-        if($dictionary->fk_user_id != auth()->user()->id) {
+        if ($dictionary->fk_user_id != auth()->user()->id) {
             return abort(404);
         }
         if (request()->get('parentId') == null) {
@@ -44,7 +44,7 @@ class ConceptController extends Controller
         $request->validate([
             'name' => ['required', 'max:50', Rule::notIn(Dictionary::find($dictionaryId)->concepts()->pluck('name'))],
             'description' => 'max:500',
-            'fk_parent_concept_id' => ['uuid',Rule::in(Dictionary::find($dictionaryId)->concepts()->pluck('id'))],
+            'fk_parent_concept_id' => ['uuid', Rule::in(Dictionary::find($dictionaryId)->concepts()->pluck('id'))],
         ]);
 
         $concept = new Concept([
@@ -97,5 +97,13 @@ class ConceptController extends Controller
         $concept->deleteOrFail();
 
         return redirect()->back()->with('success', 'Concept deleted.');
+    }
+
+    public function examples(string $dictionary, string $concept)
+    {
+        $concepts = Dictionary::findOrFail($dictionary)->rootConcepts();
+        $concept = Concept::findOrFail($concept);
+        $dictionary = Dictionary::findOrFail($dictionary);
+        return view('concept.examples', compact('dictionary', 'concept', 'concepts'));
     }
 }

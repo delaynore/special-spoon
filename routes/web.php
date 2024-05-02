@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AttributeController;
+use App\Http\Controllers\ConceptAttributeController;
 use App\Http\Controllers\ConceptController;
 use App\Http\Controllers\DictionaryController;
 use App\Http\Controllers\ProfileController;
@@ -54,22 +56,48 @@ Route::resource('/my', DictionaryController::class)
     ->name('show', 'dictionary.show');
 
 Route::get('/my/{dictionary}/dashboard', [DictionaryController::class, 'show'])
-    ->name('dictionary.show');
+    ->name('dictionary.show')
+    ->middleware(['auth', 'verified']);
 
 Route::resource('/my/{dictionary}/concept/', ConceptController::class)
     ->middleware(['auth', 'verified'])
     ->name('create', 'concept.create')
     ->name('store', 'concept.store')
-    ->name('destroy', 'concept.destroy');
+    ->name('destroy', 'concept.destroy')
+    ->middleware(['auth', 'verified']);
 
 Route::get('/my/{dictionary}/dashboard/{concept}/', [ConceptController::class, 'show'])
-->name('concept.show');
-Route::delete('/my/{dictionary}/concept/{concept}', [ConceptController::class, 'destroy']);
+    ->name('concept.show')
+    ->middleware(['auth', 'verified']);
+Route::delete('/my/{dictionary}/concept/{concept}', [ConceptController::class, 'destroy'])
+    ->middleware(['auth', 'verified']);
+Route::get('/my/{dictionary}/examples/{concept}', [ConceptController::class, 'examples'])->name('concept.examples')
+    ->middleware(['auth', 'verified']);
 
 //Route::name("dictionary")->get('/dictionary', [DictionaryController::class, 'index']);
 
-Route::get('/tags', [TagController::class,'index']);
+Route::get('/tags', [TagController::class, 'index']);
 
-Route::get('my/{dictionary}/export', [DictionaryController::class, 'export'])->name('dictionary.export');
 
-require __DIR__.'/auth.php';
+Route::prefix('my/{dictionary}')->group(function () {
+    Route::get('/export', [DictionaryController::class, 'export'])->name('dictionary.export');
+
+    Route::resource('concept/{concept}/attributes', ConceptAttributeController::class)->only(['create', 'store'])
+        ->names([
+            'create' => 'concept.attribute.create',
+            'store' => 'concept.attribute.store',
+        ]);
+});
+
+Route::resource('attributes', AttributeController::class)
+->names([
+    'create' => 'attribute.create',
+    'store' => 'attribute.store',
+    'destroy' => 'attribute.destroy',
+    'update' => 'attribute.update',
+    'edit' => 'attribute.edit',
+    'show' => 'attribute.show',
+    'index' => 'attribute.index',
+]);
+
+require __DIR__ . '/auth.php';

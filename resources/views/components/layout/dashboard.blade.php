@@ -6,7 +6,7 @@
     <x-slot name="navigation"></x-slot>
     <div class="flex flex-row px-4 mt-2">
         @include('components.dashboard.sidebar.sidebar')
-        <section class="flex-grow-10 pl-4 pr-4 w-full">
+        <section class="flex-grow-10 pl-4 pr-4 w-3/4">
             {{ $slot }}
         </section>
     </div>

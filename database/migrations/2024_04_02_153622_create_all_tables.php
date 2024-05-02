@@ -59,7 +59,7 @@ return new class extends Migration
         Schema::create('attributes', function (Blueprint $table) {
             $table->uuid('id')->primary();
             // Заготовка - привязка на понятие.
-            $table->uuid('fk_concept_id');
+            $table->uuid('fk_concept_id')->nullable();
             $table->string('name',255);
             $table->enum('type', array_column(DataType::cases(), 'value'));
             $table->timestampsTz();

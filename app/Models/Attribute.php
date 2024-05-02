@@ -31,9 +31,6 @@ class Attribute extends Model
     ];
 
     protected $casts = [
-        'id' => 'uuid',
-        'name' => 'string',
         'type' => DataType::class,
-        'fk_concept_id' => 'uuid',
     ];
 }
