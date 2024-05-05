@@ -20,7 +20,7 @@ class DictionaryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index() : View
+    public function index(): View
     {
 
         $dictionaries = Dictionary::where('fk_user_id', '=', auth()->user()->id);
@@ -41,7 +41,7 @@ class DictionaryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) : RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
             'name' => ['required', 'max:50', Rule::notIn(Dictionary::where('fk_user_id', '=', auth()->user()->id)->pluck('name'))],
@@ -64,33 +64,39 @@ class DictionaryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id) : View
+    public function show(string $id): View
     {
         $dictionary = Dictionary::where('fk_user_id', '=', auth()->user()->id)->findOrFail($id);
 
-        return view('dictionary.show',
-            ['dictionary' => $dictionary,
-        'concepts' => $dictionary->rootConcepts()]);
+        return view(
+            'dictionary.show',
+            [
+                'dictionary' => $dictionary,
+                'concepts' => $dictionary->rootConcepts()
+            ]
+        );
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id) : View
+    public function edit(string $id): View
     {
-        return view('dictionary.edit',
-            ['dictionary' => Dictionary::where('fk_user_id', '=', auth()->user()->id)->findOrFail($id)]);
+        return view(
+            'dictionary.edit',
+            ['dictionary' => Dictionary::where('fk_user_id', '=', auth()->user()->id)->findOrFail($id)]
+        );
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $dictionaryId) : RedirectResponse
+    public function update(Request $request, string $dictionaryId): RedirectResponse
     {
         $dictionary = Dictionary::where('fk_user_id', '=', auth()->user()->id)->findOrFail($dictionaryId);
 
         $validated = $request->validate([
-            'name' => ['required', 'max:50'],
+            'name' => ['required', 'max:50', Rule::notIn(Dictionary::where('fk_user_id', '=', auth()->user()->id)->pluck('name'))],
             'description' => 'max:500',
             'visibility' => [new Enum(Visibility::class)],
         ]);
@@ -106,7 +112,7 @@ class DictionaryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id) : RedirectResponse
+    public function destroy(string $id): RedirectResponse
     {
         $dictionary = Dictionary::findOrFail($id);
 
@@ -119,16 +125,21 @@ class DictionaryController extends Controller
     {
         $dictionary = Dictionary::where('fk_user_id', '=', auth()->user()->id)->findOrFail($id);
         $concepts = $dictionary->concepts()->pluck('name');
+        if (count($concepts) == 0) {
+            return redirect()->back()->with('export.error', 'В словаре нет понятий');
+        }
         $conceptsString = '';
         foreach ($concepts as $concept) {
             $conceptsString .= $concept . "\n";
         }
         $fileContent = $conceptsString;
-        $fileName = Str::random(5);
-        Storage::disk('local')->put($fileName.'.txt', $fileContent);
+        $fileName = $dictionary->name . '-concepts.txt';
+        Storage::disk('local')->put($fileName, $fileContent);
         /// файл сохраняется на диске, как то подумать надо его удалением
         // потому что он может делаться часто и захламлять диск
         // либо же перезаписывать и гдето хранить информацию поменялся ли список концептов
-        return Storage::download($fileName.'.txt');
+        return response()
+            ->download(Storage::disk('local')->path($fileName), $fileName, ['Content-Type' => 'text/plain'])
+            ->deleteFileAfterSend(true);
     }
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\ConceptAttributeController;
+use App\Http\Controllers\ConceptAttributeValueController;
 use App\Http\Controllers\ConceptController;
 use App\Http\Controllers\DictionaryController;
 use App\Http\Controllers\ProfileController;
@@ -82,10 +83,11 @@ Route::get('/tags', [TagController::class, 'index']);
 Route::prefix('my/{dictionary}')->group(function () {
     Route::get('/export', [DictionaryController::class, 'export'])->name('dictionary.export');
 
-    Route::resource('concept/{concept}/attributes', ConceptAttributeController::class)->only(['create', 'store'])
+    Route::resource('concept/{concept}/attributes', ConceptAttributeController::class)->only(['create', 'store', 'destroy'])
         ->names([
             'create' => 'concept.attribute.create',
             'store' => 'concept.attribute.store',
+            'destroy' => 'concept.attribute.destroy',
         ]);
 });
 
@@ -98,6 +100,22 @@ Route::resource('attributes', AttributeController::class)
     'edit' => 'attribute.edit',
     'show' => 'attribute.show',
     'index' => 'attribute.index',
+])
+->middleware(['auth', 'verified']);
+
+Route::delete('concept/{concept}/examples/{exampleNumber}', [ConceptAttributeValueController::class, 'destroy'])
+->name('concept.example.destroy')->middleware(['auth', 'verified']);
+Route::get('concept/{concept}/examples/{exampleNumber}', [ConceptAttributeValueController::class, 'edit'])
+->name('concept.example.edit')->middleware(['auth', 'verified']);
+Route::put('concept/{concept}/examples/{exampleNumber}', [ConceptAttributeValueController::class, 'edit'])
+->name('concept.example.update')->middleware(['auth', 'verified']);
+
+Route::resource('concept/{concept}/example', ConceptAttributeValueController::class)->only(['store', 'update', 'create'])->middleware(['auth', 'verified'])
+->names([
+    'create' => 'concept.example.create',
+    'store' => 'concept.example.store',
+    'update' => 'concept.example.update',
+    'edit' => 'concept.example.edit',
 ]);
 
 require __DIR__ . '/auth.php';
