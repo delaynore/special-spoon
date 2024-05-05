@@ -77,10 +77,10 @@ return new class extends Migration
             $table->unique(['fk_concept_id', 'fk_attribute_id']);
         });
 
-        Schema::create('concept_attributes_values', function (Blueprint $table) {
+        Schema::create('concept_attribute_values', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('fk_attribute_id')->references('id')->on('attributes')->cascadeOnDelete();
-            $table->foreignUuid('fk_concept_attribute_id')->references('id')->on('concepts')->cascadeOnDelete();
+            $table->foreignUuid('fk_attribute_id')->nullable()->references('id')->on('attributes')->cascadeOnDelete();
+            $table->foreignUuid('fk_concept_attribute_id')->references('id')->on('concept_attributes')->cascadeOnDelete();
             $table->timestampsTz();
             $table->integer('example_number');
             $table->string('value');

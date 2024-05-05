@@ -45,6 +45,11 @@ class Concept extends Model
         return $this->hasMany(Concept::class, 'fk_parent_concept_id');
     }
 
+    public function conceptAttributes() : HasMany
+    {
+        return $this->hasMany(ConceptAttribute::class, 'fk_concept_id');
+    }
+
     protected $fillable = [
         'name',
         'definition',

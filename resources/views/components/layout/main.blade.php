@@ -34,7 +34,7 @@
 <body class="font-sans antialiased flex flex-col min-h-screen">
     <div class="flex flex-col flex-grow bg-gray-100 dark:bg-gray-900">
         @if (isset($navigation))
-            @include('components.navigation.navbar')
+        @include('components.navigation.navbar')
         @endif
 
         <!-- Page Heading
@@ -55,6 +55,25 @@
         <footer class="mt-4">
             @include('components.footer.footer')
         </footer>
+
+        @session('success')
+        <x-toast type="success" color='green'>{{ $value }}</x-toast>
+        @endsession
+        @session('error')
+        <x-toast type="error" color='red'>{{ $value }}</x-toast>
+        @endsession
+        @session('attribute.create.success')
+        <x-toast type="success" color='green'>{{ $value }}</x-toast>
+        @endsession
+        @session('attribute.update.success')
+        <x-toast type="success" color='green'>{{ $value }}</x-toast>
+        @endsession
+        @session('attribute.delete.error')
+        <x-toast type="error" color='red'>{{ $value }}</x-toast>
+        @endsession
+        @session('attribute.delete.success')
+        <x-toast type="success" color='red'>{{ $value }}</x-toast>
+        @endsession
     </div>
 </body>
 

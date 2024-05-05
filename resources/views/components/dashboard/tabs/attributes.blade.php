@@ -1,5 +1,10 @@
 @php
-    $attributes = $concept->attributes()->get();
+$attributes = $attributes = \App\Models\Attribute::join('concept_attributes', 'attributes.id', '=', 'concept_attributes.fk_attribute_id')
+    ->where('concept_attributes.fk_concept_id', $concept->id)
+    ->selectRaw('attributes.id, attributes.name, attributes.type')
+    ->orderBy('concept_attributes.created_at')
+    ->get();
+$conceptAttr = \App\Models\ConceptAttribute::where('fk_concept_id', $concept->id)->get();
 @endphp
 
 <div class="flex justify-end my-2">
@@ -29,13 +34,18 @@
             @foreach ($attributes as $attribute)
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                 <th scope="row" class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    {{ $attribute->name}}
+                    {{ $attribute->name }}
                 </th>
                 <td class="px-2 py-2">
-                    {{ $attribute->type}}
+                    {{ $attribute->type->value }}
                 </td>
                 <td class="px-2 py-2">
-                    <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline">{{ __('Убрать')}}</a>
+                    <form action="{{route('concept.attribute.destroy', [$dictionary, $concept, $conceptAttr->firstOrFail('fk_attribute_id', $attribute->id)->id])}}" method="post">
+                        @csrf
+                        @method('delete')
+                        <button type="submit" class="font-medium text-red-600 dark:text-red-500 hover:underline">{{ __('Удалить')}}</button>
+                    </form>
+
                 </td>
             </tr>
             @endforeach

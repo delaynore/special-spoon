@@ -46,21 +46,4 @@ $names = ['name', 'type'];
             </div>
         </div>
     </section>
-
-
-
-    @session('attribute.create.success')
-    <x-toast type="success" color='green'>{{ $value }}</x-toast>
-    @endsession
-    @session('attribute.update.success')
-    <x-toast type="success" color='green'>{{ $value }}</x-toast>
-    @endsession
-    @session('attribute.delete.error')
-    <x-toast type="error" color='red'>{{ $value }}</x-toast>
-    @endsession
-    @session('attribute.delete.success')
-    <x-toast type="success" color='red'>{{ $value }}</x-toast>
-    @endsession
-
-
 </x-layout.main>
