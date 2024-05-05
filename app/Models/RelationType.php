@@ -11,7 +11,7 @@ class RelationType extends Model
 {
     use HasFactory, HasUuids;
 
-    public function relatedConcepts() : HasMany
+    public function relatedConcepts(): HasMany
     {
         return $this->hasMany(ConceptRelation::class, 'fk_relation_type_id');
     }

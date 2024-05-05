@@ -20,17 +20,17 @@ class ConceptRelation extends Model
 {
     use HasFactory, HasUuids;
 
-    public function concept1() : BelongsTo
+    public function concept1(): BelongsTo
     {
         return $this->belongsTo(Concept::class, 'fk_concept_1_id');
     }
 
-    public function concept2() : BelongsTo
+    public function concept2(): BelongsTo
     {
         return $this->belongsTo(Concept::class, 'fk_concept_2_id');
     }
 
-    public function relationType() : BelongsTo
+    public function relationType(): BelongsTo
     {
         return $this->belongsTo(RelationType::class, 'fk_relation_type_id');
     }
@@ -40,5 +40,4 @@ class ConceptRelation extends Model
         'fk_concept_2_id',
         'fk_relation_type_id',
     ];
-
 }

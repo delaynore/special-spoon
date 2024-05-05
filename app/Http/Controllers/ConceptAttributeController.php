@@ -47,16 +47,16 @@ class ConceptAttributeController extends Controller
 
         $conceptAttribute->saveOrFail();
 
-        if($concept->attributes()->count() > 1) {
+        if ($concept->attributes()->count() > 1) {
 
             $exampleNumbers = ConceptAttributeValue::join('concept_attributes', 'concept_attribute_values.fk_concept_attribute_id', '=', 'concept_attributes.id')
-            ->join('concepts', 'concept_attributes.fk_concept_id', '=', 'concepts.id')
-            ->where('concept_attributes.fk_concept_id', $concept->id)
-            ->selectRaw('concept_attribute_values.example_number')
-            ->groupBy('concept_attribute_values.example_number')
-            ->orderBy('concept_attribute_values.example_number')
-            ->pluck('example_number');
-            foreach($exampleNumbers as $exampleNumber) {
+                ->join('concepts', 'concept_attributes.fk_concept_id', '=', 'concepts.id')
+                ->where('concept_attributes.fk_concept_id', $concept->id)
+                ->selectRaw('concept_attribute_values.example_number')
+                ->groupBy('concept_attribute_values.example_number')
+                ->orderBy('concept_attribute_values.example_number')
+                ->pluck('example_number');
+            foreach ($exampleNumbers as $exampleNumber) {
                 ConceptAttributeValue::create([
                     'fk_concept_attribute_id' => $conceptAttribute->id,
                     'example_number' => $exampleNumber,

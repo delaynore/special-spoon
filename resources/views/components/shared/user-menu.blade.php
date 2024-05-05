@@ -20,5 +20,3 @@
     </ul>
 </div>
 @endauth
-
-

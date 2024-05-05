@@ -2,7 +2,8 @@
 
 namespace App\Enums;
 
-enum AttacmentType: string {
+enum AttacmentType: string
+{
     case IMAGE = 'image';
     case VIDEO = 'video';
     case AUDIO = 'audio';

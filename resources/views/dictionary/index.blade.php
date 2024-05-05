@@ -1,5 +1,5 @@
 <x-layout.main>
-<x-slot:title>{{ __('Мои словари') }}</x-slot:title>
+    <x-slot:title>{{ __('Мои словари') }}</x-slot:title>
 
     <x-slot name="navigation"></x-slot>
     <section class="flex items-start">

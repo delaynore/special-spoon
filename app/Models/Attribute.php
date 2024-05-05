@@ -22,11 +22,12 @@ class Attribute extends Model
 {
     use HasFactory, HasUuids;
 
-    public function concepts() : BelongsToMany {
+    public function concepts(): BelongsToMany
+    {
         return $this->belongsToMany(Concept::class, 'concept_attributes', 'fk_attribute_id', 'fk_concept_id');
     }
 
-    public function conceptAttributes() : HasMany
+    public function conceptAttributes(): HasMany
     {
         return $this->hasMany(ConceptAttribute::class, 'fk_attribute_id');
     }

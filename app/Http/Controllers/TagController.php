@@ -13,7 +13,7 @@ class TagController extends Controller
     public function index()
     {
         $tag = Tag::create([
-            "name"=> "Спорт",
+            "name" => "Спорт",
         ]);
         $tag->save();
 

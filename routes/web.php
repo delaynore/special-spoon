@@ -92,31 +92,31 @@ Route::prefix('my/{dictionary}')->group(function () {
 });
 
 Route::resource('attributes', AttributeController::class)
-->names([
-    'create' => 'attribute.create',
-    'store' => 'attribute.store',
-    'destroy' => 'attribute.destroy',
-    'update' => 'attribute.update',
-    'edit' => 'attribute.edit',
-    'show' => 'attribute.show',
-    'index' => 'attribute.index',
-])
-->middleware(['auth', 'verified']);
+    ->names([
+        'create' => 'attribute.create',
+        'store' => 'attribute.store',
+        'destroy' => 'attribute.destroy',
+        'update' => 'attribute.update',
+        'edit' => 'attribute.edit',
+        'show' => 'attribute.show',
+        'index' => 'attribute.index',
+    ])
+    ->middleware(['auth', 'verified']);
 
 Route::delete('concept/{concept}/examples/{exampleNumber}', [ConceptAttributeValueController::class, 'destroy'])
-->name('concept.example.destroy')->middleware(['auth', 'verified']);
+    ->name('concept.example.destroy')->middleware(['auth', 'verified']);
 Route::get('concept/{concept}/examples/{exampleNumber}', [ConceptAttributeValueController::class, 'edit'])
-->name('concept.example.edit')->middleware(['auth', 'verified']);
+    ->name('concept.example.edit')->middleware(['auth', 'verified']);
 Route::put('concept/{concept}/examples/{exampleNumber}', [ConceptAttributeValueController::class, 'edit'])
-->name('concept.example.update')->middleware(['auth', 'verified']);
+    ->name('concept.example.update')->middleware(['auth', 'verified']);
 
 Route::resource('concept/{concept}/example', ConceptAttributeValueController::class)->only(['store', 'update', 'create'])->middleware(['auth', 'verified'])
-->names([
-    'create' => 'concept.example.create',
-    'store' => 'concept.example.store',
-    'update' => 'concept.example.update',
-    'edit' => 'concept.example.edit',
-]);
+    ->names([
+        'create' => 'concept.example.create',
+        'store' => 'concept.example.store',
+        'update' => 'concept.example.update',
+        'edit' => 'concept.example.edit',
+    ]);
 
 Route::fallback(function () {
     return view('errors.404');

@@ -20,32 +20,32 @@ class Concept extends Model
 {
     use HasFactory, HasUuids;
 
-    public function dictionary() : BelongsTo
+    public function dictionary(): BelongsTo
     {
         return $this->belongsTo(Dictionary::class, 'fk_dictionary_id');
     }
 
-    public function attachements() : HasMany
+    public function attachements(): HasMany
     {
         return $this->hasMany(Attachment::class);
     }
 
-    public function attributes() : BelongsToMany
+    public function attributes(): BelongsToMany
     {
         return $this->belongsToMany(Attribute::class, 'concept_attributes', 'fk_concept_id', 'fk_attribute_id');
     }
 
-    public function parent() : BelongsTo
+    public function parent(): BelongsTo
     {
         return $this->belongsTo(Concept::class, 'fk_parent_concept_id');
     }
 
-    public function children() : HasMany
+    public function children(): HasMany
     {
         return $this->hasMany(Concept::class, 'fk_parent_concept_id');
     }
 
-    public function conceptAttributes() : HasMany
+    public function conceptAttributes(): HasMany
     {
         return $this->hasMany(ConceptAttribute::class, 'fk_concept_id');
     }
@@ -57,7 +57,5 @@ class Concept extends Model
         'fk_parent_concept_id',
     ];
 
-    protected $casts = [
-
-    ];
+    protected $casts = [];
 }

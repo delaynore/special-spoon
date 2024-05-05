@@ -24,17 +24,17 @@ class Dictionary extends Model
 {
     use HasFactory, HasUuids;
 
-    public function user() : BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'fk_user_id');
     }
 
-    public function tags() : BelongsToMany
+    public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class, 'dictionary_tags', 'fk_dictionary_id', 'fk_tag_id');
     }
 
-    public function concepts() : HasMany
+    public function concepts(): HasMany
     {
         return $this->hasMany(Concept::class, 'fk_dictionary_id');
     }

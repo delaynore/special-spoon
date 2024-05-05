@@ -2,7 +2,8 @@
 
 namespace App\Enums;
 
-enum DataType: string {
+enum DataType: string
+{
     case INTEGER = 'integer';
     case DECIMAL = 'decimal';
     case DOUBLE = 'double';

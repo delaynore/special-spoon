@@ -60,7 +60,7 @@ class ConceptAttributeValueController extends Controller
             $value = $request->get($attr->id);
             $attribute = \App\Models\Attribute::find($attr->id);
 
-            if($attribute->type == DataType::BOOLEAN) {
+            if ($attribute->type == DataType::BOOLEAN) {
                 $value = $value == 'true' ? true : false;
             }
 
@@ -98,7 +98,7 @@ class ConceptAttributeValueController extends Controller
             ->pluck('example_number');
 
         // Проверяем есть ли экземпляр с такой цифрой
-        if(!$exampleNumbers->contains($exampleNumber)) {
+        if (!$exampleNumbers->contains($exampleNumber)) {
             return abort(404);
         }
 
@@ -118,7 +118,7 @@ class ConceptAttributeValueController extends Controller
         //}
 
         $dictionary = $concept->dictionary()->get()->first();
-        return view('concept-attribute-value.edit', compact('dictionary','concept', 'exampleNumber', 'exampleAttributes'));
+        return view('concept-attribute-value.edit', compact('dictionary', 'concept', 'exampleNumber', 'exampleAttributes'));
     }
 
     /**
@@ -128,12 +128,11 @@ class ConceptAttributeValueController extends Controller
     {
         // Нет пока проверки на пустые значения и вообще валидации.
         foreach ($request->all() as $id => $newValue) {
-            if( str_starts_with($id, '_'))
-            {
+            if (str_starts_with($id, '_')) {
                 continue;
             }
             $conceptAttributeValue = ConceptAttributeValue::find($id);
-            if(!$conceptAttributeValue || $conceptAttributeValue->example_number != $exampleNumber) {
+            if (!$conceptAttributeValue || $conceptAttributeValue->example_number != $exampleNumber) {
                 return redirect()->back()->with('error', 'Такого атрибута не существует');
             }
             $conceptAttributeValue->value = $newValue;
@@ -149,9 +148,9 @@ class ConceptAttributeValueController extends Controller
     public function destroy(Concept $concept, int $exampleNumber)
     {
         ConceptAttributeValue::join('concept_attributes', 'concept_attribute_values.fk_concept_attribute_id', '=', 'concept_attributes.id')
-        ->where('concept_attributes.fk_concept_id', $concept->id)
-        ->where('concept_attribute_values.example_number', $exampleNumber)
-        ->delete();
+            ->where('concept_attributes.fk_concept_id', $concept->id)
+            ->where('concept_attribute_values.example_number', $exampleNumber)
+            ->delete();
 
         return redirect()->back()->with('error', 'Экземпляр удален');
     }

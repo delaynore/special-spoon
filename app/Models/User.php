@@ -21,7 +21,7 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable, HasUuids;
 
 
-    public function dictionaries() : HasMany
+    public function dictionaries(): HasMany
     {
         return $this->hasMany(Dictionary::class, 'fk_user_id');
     }

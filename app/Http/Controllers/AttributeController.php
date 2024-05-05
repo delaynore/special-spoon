@@ -17,10 +17,9 @@ class AttributeController extends Controller
      */
     public function index()
     {
-        if(request('search')) {
+        if (request('search')) {
             $attributes = Attribute::where('name', 'ilike', '%' . request('search') . '%')->get();
-        }
-        else {
+        } else {
             $attributes = Attribute::all();
         }
 

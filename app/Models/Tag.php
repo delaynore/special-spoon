@@ -11,7 +11,7 @@ class Tag extends Model
 {
     use HasFactory, HasUuids;
 
-    public function dictionaries() : BelongsToMany
+    public function dictionaries(): BelongsToMany
     {
         return $this->belongsToMany(Dictionary::class, 'dictionary_tags', 'fk_tag_id', 'fk_dictionary_id');
     }

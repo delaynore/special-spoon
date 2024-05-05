@@ -1,9 +1,9 @@
 @php
 $attributes = $attributes = \App\Models\Attribute::join('concept_attributes', 'attributes.id', '=', 'concept_attributes.fk_attribute_id')
-    ->where('concept_attributes.fk_concept_id', $concept->id)
-    ->selectRaw('attributes.id, attributes.name, attributes.type')
-    ->orderBy('concept_attributes.created_at')
-    ->get();
+->where('concept_attributes.fk_concept_id', $concept->id)
+->selectRaw('attributes.id, attributes.name, attributes.type')
+->orderBy('concept_attributes.created_at')
+->get();
 $conceptAttr = \App\Models\ConceptAttribute::where('fk_concept_id', $concept->id)->get();
 @endphp
 

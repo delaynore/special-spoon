@@ -23,11 +23,13 @@ class Attachment extends Model
 {
     use HasFactory, HasUuids;
 
-    public function concept(): BelongsTo {
+    public function concept(): BelongsTo
+    {
         return $this->belongsTo(Concept::class, 'fk_concept_id');
     }
 
-    public function user(): BelongsTo {
+    public function user(): BelongsTo
+    {
         return $this->belongsTo(User::class, 'fk_user_id');
     }
 
