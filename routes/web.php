@@ -118,4 +118,8 @@ Route::resource('concept/{concept}/example', ConceptAttributeValueController::cl
     'edit' => 'concept.example.edit',
 ]);
 
+Route::fallback(function () {
+    return view('errors.404');
+});
+
 require __DIR__ . '/auth.php';
