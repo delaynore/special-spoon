@@ -30,7 +30,7 @@ class DictionaryController extends Controller
         if (count($visibility) != 2 && count($visibility) != 0) {
             $dictionaries = $dictionaries->where('visibility', request('visibility')[0]);
         }
-        return view('dictionary.index', ['dictionaries' => $dictionaries->orderBy('updated_at', 'desc')->get()]);
+        return view('dictionary.index', ['dictionaries' => $dictionaries->orderBy('updated_at', 'desc')->paginate(15)]);
     }
 
     /**
