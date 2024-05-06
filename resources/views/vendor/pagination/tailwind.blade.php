@@ -35,7 +35,7 @@
                     @endif
                     {!! __('из') !!}
                     <span class="font-medium">{{ $paginator->total() }}</span>
-                    {!! __('словарей') !!}
+                    {!! __('элементов') !!}
                 </p>
             </div>
 
