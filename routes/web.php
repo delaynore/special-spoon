@@ -30,9 +30,7 @@ Route::get("/about", function () {
     return view("components.pages.about");
 })->name('about');
 
-Route::get("/home", function () {
-    return redirect()->route('home');
-});
+Route::redirect("/home", "/");
 
 Route::get('/', function (Request $request) {
     if (request('search')) {

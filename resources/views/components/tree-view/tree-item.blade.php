@@ -1,5 +1,5 @@
 @php
-$dictionary = $concept->fk_dictionary_id;
+$dictionary = $concept->dictionary;
 $children = $concept->children()->get();
 $unique = Str::random(5);
 @endphp
@@ -39,6 +39,7 @@ $unique = Str::random(5);
         <a title="{{$concept->name}}" href="#" class="block overflow-hidden text-ellipsis px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{$concept->name}}</a>
     </div>
     <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="-button">
+        @if(Auth::check() && Auth::user()->id === $dictionary->user->id)
         <li>
             <a href="{{route('concept.create', ['dictionary' => $dictionary, 'parentId' => $concept->id])}}" class="flex items-center justify-between py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{__('Добавить сына')}}
                 <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -46,6 +47,7 @@ $unique = Str::random(5);
                 </svg>
             </a>
         </li>
+        @endif
         <li>
             <form action="{{route('concept.show', ['dictionary' => $dictionary, 'concept' => $concept])}}" method="get">
                 <button type="submit" class="w-full flex items-center justify-between py-2 px-4 text-sm text-gray-700 hover:bg-gray-100  dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
@@ -58,6 +60,7 @@ $unique = Str::random(5);
             </form>
         </li>
 
+        @if(Auth::check() && Auth::user()->id === $dictionary->user->id)
         <li>
             <a href="#" class="flex items-center justify-between py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Редактировать
                 <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -65,6 +68,7 @@ $unique = Str::random(5);
                 </svg>
             </a>
         </li>
+        @endif
     </ul>
     <div class="py-1">
         <a href="#" class="flex items-center justify-between py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Ссылка
@@ -73,6 +77,7 @@ $unique = Str::random(5);
             </svg>
         </a>
     </div>
+    @if(Auth::check() && Auth::user()->id === $dictionary->user->id)
     <div class="py-1">
         <form action="{{route('concept.destroy', [$dictionary ,$concept->id])}}" method="post">
             @csrf
@@ -85,4 +90,5 @@ $unique = Str::random(5);
             </button>
         </form>
     </div>
+    @endif
 </div>
