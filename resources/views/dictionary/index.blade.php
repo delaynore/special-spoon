@@ -76,6 +76,9 @@
                             @each('dictionary.item', $dictionaries, 'dictionary')
                         </tbody>
                     </table>
+                    <div class="my-2 mx-4">
+                        {{$dictionaries->links()}}
+                    </div>
                     @endisset
                 </div>
             </div>

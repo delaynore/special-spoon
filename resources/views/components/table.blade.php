@@ -41,4 +41,10 @@
             @endforeach
         </tbody>
     </table>
+    @if ($rows->links() != null)
+    <div class="my-2 mx-4">
+        {{ $rows->links() }}
+    </div>
+
+    @endif
 </div>
