@@ -22,10 +22,13 @@ class DictionaryController extends Controller
      */
     public function index(): View
     {
-
-        $dictionaries = Dictionary::where('fk_user_id', '=', auth()->user()->id);
-        if (isset($_REQUEST['search'])) {
-            $dictionaries = $dictionaries->where('name', 'like', '%' . $_REQUEST['search'] . '%');
+        $dictionaries = Dictionary::where('fk_user_id', auth()->user()->id);
+        if (request('search')) {
+            $dictionaries = $dictionaries->where('name', 'ilike', '%' . request('search') . '%');
+        }
+        $visibility = request()->input('visibility', []);
+        if (count($visibility) != 2 && count($visibility) != 0) {
+            $dictionaries = $dictionaries->where('visibility', request('visibility')[0]);
         }
         return view('dictionary.index', ['dictionaries' => $dictionaries->orderBy('updated_at', 'desc')->get()]);
     }
@@ -66,7 +69,7 @@ class DictionaryController extends Controller
      */
     public function show(string $id): View
     {
-        $dictionary = Dictionary::where('fk_user_id', '=', auth()->user()->id)->findOrFail($id);
+        $dictionary = Dictionary::where('visibility', '=', Visibility::PUBLIC->value)->findOrFail($id);
 
         return view(
             'dictionary.show',
@@ -114,7 +117,7 @@ class DictionaryController extends Controller
      */
     public function destroy(string $id): RedirectResponse
     {
-        $dictionary = Dictionary::findOrFail($id);
+        $dictionary = Dictionary::where('fk_user_id', '=', auth()->user()->id)->findOrFail($id);
 
         $dictionary->delete();
 
@@ -135,9 +138,7 @@ class DictionaryController extends Controller
         $fileContent = $conceptsString;
         $fileName = $dictionary->name . '-concepts.txt';
         Storage::disk('local')->put($fileName, $fileContent);
-        /// файл сохраняется на диске, как то подумать надо его удалением
-        // потому что он может делаться часто и захламлять диск
-        // либо же перезаписывать и гдето хранить информацию поменялся ли список концептов
+
         return response()
             ->download(Storage::disk('local')->path($fileName), $fileName, ['Content-Type' => 'text/plain'])
             ->deleteFileAfterSend(true);

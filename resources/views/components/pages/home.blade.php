@@ -74,9 +74,8 @@
                                 <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{$dictionary->name}}</h5>
                                 <p class="hidden md:block mb-3 font-normal text-gray-700 dark:text-gray-400">{{$dictionary->description}}</p>
                                 <div class="hidden md:flex md:flex-wrap md:gap-1">
-                                    @for ($i = 0; $i < 5; $i++)
-                                    <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 animate-pulse w-20 h-3 dark:text-blue-300"></span>
-                                    @endfor
+                                    @for ($i = 0; $i < 5; $i++) <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 animate-pulse w-20 h-3 dark:text-blue-300"></span>
+                                        @endfor
                                 </div>
                             </div>
                             <div class="flex justify-center items-center flex-col">
@@ -90,19 +89,17 @@
 
                         <div id="{{$dictionary->id}}" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                             <ul class="text-sm text-gray-700 dark:text-gray-200" aria-labelledby="{{$dictionary->id}}-button">
-                                @if (Auth::check() && Auth::user()->id === $dictionary->user->id)
+                                @if (Auth::check())
                                 <li>
-                                    <form action="{{route('dictionary.show', $dictionary->id)}}" method="get">
-                                        @csrf
-                                        <button type="submit" class="w-full flex items-center justify-between py-2 px-4 text-sm text-gray-700 hover:bg-gray-100  dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
-                                            Открыть
-                                            <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
-                                                <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                            </svg>
-                                        </button>
-                                    </form>
+                                    <a href="{{route('dictionary.show', $dictionary->id)}}" class="w-full flex items-center justify-between py-2 px-4 text-sm text-gray-700 hover:bg-gray-100  dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+                                        Открыть
+                                        <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
+                                            <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                        </svg>
+                                    </a>
                                 </li>
+                                @if (Auth::user()->id === $dictionary->user->id)
                                 <li>
                                     <a href="{{ route('dictionary.edit', $dictionary->id) }}" class="flex items-center justify-between py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Редактировать
                                         <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -110,6 +107,7 @@
                                         </svg>
                                     </a>
                                 </li>
+                                @endif
                                 @endif
                             </ul>
                             <div class="py-1">
