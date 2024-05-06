@@ -69,7 +69,12 @@ class DictionaryController extends Controller
      */
     public function show(string $id): View
     {
-        $dictionary = Dictionary::where('visibility', '=', Visibility::PUBLIC->value)->findOrFail($id);
+
+        $dictionary = Dictionary::findOrFail($id);
+
+        if($dictionary->visibility == Visibility::PRIVATE && $dictionary->fk_user_id !== auth()->user()->id) {
+            return abort(404);
+        }
 
         return view(
             'dictionary.show',
