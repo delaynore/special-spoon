@@ -8,6 +8,7 @@ use App\Http\Controllers\DictionaryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TagController;
 use App\Models\Concept;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,10 +31,17 @@ Route::get("/about", function () {
 })->name('about');
 
 Route::get("/home", function () {
-    return view("components.pages.home");
-})->name('home');
-Route::get('/', function () {
-    return view('components.pages.home');
+    return redirect()->route('home');
+});
+
+Route::get('/', function (Request $request) {
+    if (request('search')) {
+        $dictionaries = \App\Models\Dictionary::where('visibility', '=', 'public')->where('name', 'ilike', '%' . request('search') . '%')->paginate(15);
+    } else {
+        $dictionaries = \App\Models\Dictionary::allAvailable()->paginate(15);
+    }
+
+    return view('components.pages.home', compact('dictionaries'));
 })->name('home');
 
 

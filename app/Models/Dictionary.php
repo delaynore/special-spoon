@@ -44,6 +44,10 @@ class Dictionary extends Model
         return $this->concepts()->where('fk_parent_concept_id', null)->get();
     }
 
+    public static function allAvailable() {
+        return self::where('visibility', Visibility::PUBLIC)->with('user');
+    }
+
     protected $fillable = [
         'name',
         'description',
