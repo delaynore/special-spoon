@@ -4,3 +4,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.dl {
+    @apply text-blue-600 visited:text-purple-600 underline-offset-2 underline
+}
+
+.el {
+    @apply text-primary-700 visited:text-purple-700 underline-offset-2 underline
+}
