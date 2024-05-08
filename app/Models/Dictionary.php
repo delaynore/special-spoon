@@ -41,7 +41,7 @@ class Dictionary extends Model
 
     public function rootConcepts()
     {
-        return $this->concepts()->where('fk_parent_concept_id', null)->get();
+        return $this->concepts()->where('fk_parent_concept_id', null)->latest()->get();
     }
 
     public static function allAvailable() {

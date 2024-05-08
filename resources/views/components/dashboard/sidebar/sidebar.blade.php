@@ -1,4 +1,4 @@
-<aside class="items-center border-r w-96 dark:border-gray-600 border-gray-200 pr-4">
+<aside class="items-center border-r w-full max-w-96 min-w-36 dark:border-gray-600 border-gray-200 pr-4">
     <div class="flex justify-center mb-2">
         @if(Auth::check() && Auth::user()->id === $dictionary->user->id)
         @include('components.dashboard.sidebar.menu')

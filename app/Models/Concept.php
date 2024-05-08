@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @property string $id
@@ -43,6 +44,23 @@ class Concept extends Model
     public function children(): HasMany
     {
         return $this->hasMany(Concept::class, 'fk_parent_concept_id');
+    }
+
+    public function allChildren()
+    {
+        return DB::select("
+        WITH RECURSIVE concept_tree AS (
+          SELECT id, name, fk_parent_concept_id
+          FROM concepts
+          WHERE id = '{$this->id}'
+          UNION ALL
+          SELECT c.id, c.name, c.fk_parent_concept_id
+          FROM concepts c
+          JOIN concept_tree ct ON c.fk_parent_concept_id = ct.id
+        )
+        SELECT * FROM concept_tree
+        WHERE id != '{$this->id}';
+    ");
     }
 
     public function conceptAttributes(): HasMany

@@ -2,7 +2,7 @@
     <x-slot:title>{{ __('Мои словари') }}</x-slot:title>
 
     <x-slot name="navigation"></x-slot>
-    <section class="flex items-start">
+    <section class="flex w-full">
         <div class="max-w-screen-xl px-4 mx-auto lg:px-12 w-full mt-3">
             <div class="relative bg-white shadow-md dark:bg-gray-800 sm:rounded-lg">
                 <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
