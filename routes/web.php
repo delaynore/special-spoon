@@ -68,20 +68,27 @@ Route::get('/my/{dictionary}/dashboard', [DictionaryController::class, 'show'])
 
 Route::resource('/my/{dictionary}/concept/', ConceptController::class)
     ->middleware(['auth', 'verified'])
-    ->name('create', 'concept.create')
-    ->name('store', 'concept.store')
-    ->name('destroy', 'concept.destroy')
+    ->names([
+        'create' => 'concept.create',
+        'destroy' => 'concept.destroy',
+        'store' => 'concept.store',
+    ]);
+Route::put('/my/{dictionary}/concept/{concept}', [ConceptController::class, 'update'])
+->name('concept.update')
+->middleware(['auth', 'verified']);
+Route::get('/my/{dictionary}/concept/{concept}', [ConceptController::class, 'edit'])
+    ->name('concept.edit')
     ->middleware(['auth', 'verified']);
 
 Route::get('/my/{dictionary}/dashboard/{concept}/', [ConceptController::class, 'show'])
     ->name('concept.show')
     ->middleware(['auth', 'verified']);
+
 Route::delete('/my/{dictionary}/concept/{concept}', [ConceptController::class, 'destroy'])
     ->middleware(['auth', 'verified']);
+
 Route::get('/my/{dictionary}/examples/{concept}', [ConceptController::class, 'examples'])->name('concept.examples')
     ->middleware(['auth', 'verified']);
-
-//Route::name("dictionary")->get('/dictionary', [DictionaryController::class, 'index']);
 
 Route::get('/tags', [TagController::class, 'index']);
 

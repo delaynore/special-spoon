@@ -41,17 +41,17 @@ class ConceptController extends Controller
      */
     public function store(Request $request, string $dictionaryId)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => ['required', 'max:50', Rule::notIn(Dictionary::find($dictionaryId)->concepts()->pluck('name'))],
-            'description' => 'max:500',
+            'definition' => 'max:1000',
             'fk_parent_concept_id' => ['uuid', Rule::in(Dictionary::find($dictionaryId)->concepts()->pluck('id'))],
         ]);
 
         $concept = new Concept([
-            'name' => $request->name,
-            'definition' => $request->definition,
+            'name' => $validated['name'],
+            'definition' => $request['definition'],
             'fk_dictionary_id' => $dictionaryId,
-            'fk_parent_concept_id' =>  $request->fk_parent_concept_id,
+            'fk_parent_concept_id' =>  $request['fk_parent_concept_id'],
         ]);
 
         $concept->saveOrFail();
@@ -73,17 +73,48 @@ class ConceptController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Concept $concept)
+    public function edit(Dictionary $dictionary, Concept $concept)
     {
-        //
+        return view('concept.edit', compact('dictionary', 'concept'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Concept $concept)
+    public function update(Request $request, Dictionary $dictionary, Concept $concept)
     {
-        //
+        $validated = $request->validate([
+            'name' => ['required', 'max:50', Rule::notIn($dictionary->concepts->where('id', '!=', $concept->id)->pluck('name'))],
+            'definition' => 'max:1000',
+            'parent' => [Rule::excludeIf(empty($request->input('parent'))), 'uuid', Rule::in($dictionary->concepts->pluck('id'))],
+        ]);
+
+        if ($validated['parent']) {
+            $children = $concept->allChildren();
+            $searchId = $validated['parent'];
+            $filtered = array_filter($children, function ($child) use ($searchId) {
+                return $child->id === $searchId;
+            });
+
+            $foundChild = current($filtered);
+
+            if ($foundChild) {
+                foreach ($concept->children()->get() as $child) {
+                    $child->updateOrFail([
+                        'fk_parent_concept_id' => $concept->fk_parent_concept_id
+                    ]);
+                }
+            }
+        }
+
+        $concept->updateOrFail([
+            'name' => $validated['name'],
+            'definition' => $validated['definition'],
+            'fk_parent_concept_id' => $validated['parent'] ?? null,
+        ]);
+
+
+        return redirect(route('concept.show', compact('dictionary', 'concept')))->with('success', "Понятие успешно изменено!");
     }
 
     /**

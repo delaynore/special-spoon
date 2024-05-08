@@ -22,14 +22,14 @@
                     <x-navigation.secondary-item href="{{route('attribute.index')}}">
                         {{ __('Атрибуты') }}
                     </x-navigation.secondary-item>
-                    <x-navigation.secondary-item>
-                        {{ __('Dashboard') }}
+                    <x-navigation.secondary-item href="#">
+                        {{ __('Теги') }}
                     </x-navigation.secondary-item>
                 </ul>
                 <div class="w-full py-1">
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button onclick="event.preventDefault();this.closest('form').submit();" class="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">{{ __('Выйти')}}</м>
+                        <button onclick="event.preventDefault();this.closest('form').submit();" class="hover:text-red-500 w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">{{ __('Выйти')}}</м>
                     </form>
                 </div>
             </div>

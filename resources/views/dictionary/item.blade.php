@@ -1,5 +1,5 @@
 @props(['dictionary'])
-<tr class="border-b dark:border-gray-700">
+<tr class="last:border-b-0 border-b dark:border-gray-700">
     <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white {{$dictionary->visibility == \App\Enums\Visibility::PRIVATE ? 'flex items-center' : ''}}">{{ $dictionary->name}}
         @if ($dictionary->visibility == \App\Enums\Visibility::PRIVATE)
         <span class="ml-2 bg-gray-900 rounded-full dark:bg-gray-200">

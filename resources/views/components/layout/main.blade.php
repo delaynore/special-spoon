@@ -31,8 +31,8 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="font-sans antialiased flex flex-col min-h-screen">
-    <div class="flex flex-col flex-grow bg-gray-100 dark:bg-gray-900">
+<body class="font-sans antialiased flex flex-col min-h-screen w-full">
+    <div class="flex flex-col flex-grow bg-gray-100 dark:bg-gray-900 w-full">
         @if (isset($navigation))
         @include('components.navigation.navbar')
         @endif
@@ -47,12 +47,12 @@
         @endif -->
 
         <!-- Page Content -->
-        <main class="flex-grow container">
+        <main class="flex-grow container flex w-full">
             @if (isset($slot))
             {{ $slot }}
             @endif
         </main>
-        <footer class="mt-4">
+        <footer>
             @include('components.footer.footer')
         </footer>
 

@@ -5,9 +5,9 @@
 @tailwind utilities;
 
 .dl {
-    @apply text-blue-600 visited:text-purple-600 underline-offset-2 underline
+    @apply text-blue-600 visited:text-purple-600 underline-offset-2 underline dark:text-blue-300  dark:visited:text-purple-300
 }
 
 .el {
-    @apply text-primary-700 visited:text-purple-700 underline-offset-2 underline
+    @apply text-primary-700 visited:text-purple-700 underline-offset-2 underline dark:text-blue-400  dark:visited:text-purple-400
 }
