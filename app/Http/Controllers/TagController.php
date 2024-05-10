@@ -12,12 +12,15 @@ class TagController extends Controller
      */
     public function index()
     {
-        $tag = Tag::create([
-            "name" => "Спорт",
-        ]);
-        $tag->save();
+        $query = Tag::query();
 
-        return Tag::all();
+        if (request('search')) {
+            $query->where('name', 'ilike', '%' . request('search') . '%');
+        }
+
+        $tags = $query->paginate(15);
+
+        return view('tag.index', compact('tags'));
     }
 
     /**
@@ -25,7 +28,7 @@ class TagController extends Controller
      */
     public function create()
     {
-        //
+        return view('tag.create');
     }
 
     /**
@@ -33,15 +36,17 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $validated = $request->validate([
+            'name' => 'required|unique:tags|max:50',
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Tag $tag)
-    {
-        //
+        Tag::create($validated);
+
+        return redirect(route('tag.index'))
+            ->with(
+                'success',
+                __('shared.entity.created', ['entity' => __('entities.tag.singular')])
+            );
     }
 
     /**
@@ -49,7 +54,7 @@ class TagController extends Controller
      */
     public function edit(Tag $tag)
     {
-        //
+        return view('tag.edit', compact('tag'));
     }
 
     /**
@@ -57,7 +62,17 @@ class TagController extends Controller
      */
     public function update(Request $request, Tag $tag)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|unique:tags,name,' . $tag->id . '|max:50',
+        ]);
+
+        $tag->updateOrFail($validated);
+
+        return redirect(route('tag.index'))
+            ->with(
+                'success',
+                __('shared.entity.updated', ['entity' => __('entities.tag.singular')])
+            );
     }
 
     /**
@@ -65,6 +80,15 @@ class TagController extends Controller
      */
     public function destroy(Tag $tag)
     {
-        //
+        $tag->deleteOrFail();
+
+        return redirect()->back()
+            ->with(
+                'success',
+                __(
+                    'shared.entity.deleted',
+                    ['entity' => __('entities.tag.singular')]
+                )
+            );
     }
 }

@@ -74,8 +74,8 @@ Route::resource('/my/{dictionary}/concept/', ConceptController::class)
         'store' => 'concept.store',
     ]);
 Route::put('/my/{dictionary}/concept/{concept}', [ConceptController::class, 'update'])
-->name('concept.update')
-->middleware(['auth', 'verified']);
+    ->name('concept.update')
+    ->middleware(['auth', 'verified']);
 Route::get('/my/{dictionary}/concept/{concept}', [ConceptController::class, 'edit'])
     ->name('concept.edit')
     ->middleware(['auth', 'verified']);
@@ -130,6 +130,18 @@ Route::resource('concept/{concept}/example', ConceptAttributeValueController::cl
         'update' => 'concept.example.update',
         'edit' => 'concept.example.edit',
     ]);
+
+Route::resource('tags', TagController::class)
+    ->names([
+        'create' => 'tag.create',
+        'store' => 'tag.store',
+        'destroy' => 'tag.destroy',
+        'update' => 'tag.update',
+        'edit' => 'tag.edit',
+        'index' => 'tag.index',
+    ])
+    ->middleware(['auth', 'verified']);
+
 
 Route::fallback(function () {
     return view('errors.404');

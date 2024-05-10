@@ -22,7 +22,7 @@
                     <x-navigation.secondary-item href="{{route('attribute.index')}}">
                         {{ __('Атрибуты') }}
                     </x-navigation.secondary-item>
-                    <x-navigation.secondary-item href="#">
+                    <x-navigation.secondary-item href="{{route('tag.index')}}">
                         {{ __('Теги') }}
                     </x-navigation.secondary-item>
                 </ul>
