@@ -31,7 +31,7 @@
                         </div>
                         <div class="p-4 md:p-5 space-y-4">
                             <label for="concept" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{__('Понятие')}}</label>
-                            <select  required id="concept" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <select id="concept" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 @foreach ($dictionary->concepts as $concept)
                                 <option value="{{route('concept.show', [$concept->dictionary, $concept])}}">{{$concept->name}}</option>
                                 @endforeach
@@ -95,7 +95,6 @@
             const btnInsertConceptLink = document.getElementById("insert-concept-link");
             const conceptSelect = document.getElementById("concept");
 
-            conceptSelect.querySelector("option").selected = true;
             btnInsertConceptLink.addEventListener("click", () => {
                 let selected = conceptSelect.options[conceptSelect.selectedIndex];
                 let linkText = inputLinkName.value || selected.text;
@@ -113,7 +112,6 @@
 
             function onChange() {
                 textarea.textContent = contenteditable.innerHTML;
-                console.log(textarea.textContent);
             }
 
             const elink = document.getElementById("elink");

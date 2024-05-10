@@ -56,6 +56,10 @@
             @include('components.footer.footer')
         </footer>
 
+        @session('status')
+        <x-toast type="success" color='blue'>{{ $value }}</x-toast>
+        @endsession
+
         @session('success')
         <x-toast type="success" color='green'>{{ $value }}</x-toast>
         @endsession
