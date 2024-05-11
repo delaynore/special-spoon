@@ -55,12 +55,15 @@ Route::middleware('auth')->group(function () {
 
 Route::resource('/my', DictionaryController::class)
     ->middleware(['auth', 'verified'])
-    ->name('index', 'my')
-    ->name('store', 'dictionary.store')
-    ->name('edit', 'dictionary.edit')
-    ->name('destroy', 'dictionary.destroy')
-    ->name('update', 'dictionary.update')
-    ->name('show', 'dictionary.show');
+    ->names([
+        'index' => 'my',
+        'create' => 'dictionary.create',
+        'store' => 'dictionary.store',
+        'edit' => 'dictionary.edit',
+        'destroy' => 'dictionary.destroy',
+        'update' => 'dictionary.update',
+        'show' => 'dictionary.show',
+    ]);
 
 Route::get('/my/{dictionary}/dashboard', [DictionaryController::class, 'show'])
     ->name('dictionary.show')
