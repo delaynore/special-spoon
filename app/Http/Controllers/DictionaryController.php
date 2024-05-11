@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Enums\Visibility;
 use App\Models\Concept;
 use App\Models\Dictionary;
+use App\Models\Tag;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -38,7 +40,7 @@ class DictionaryController extends Controller
      */
     public function create()
     {
-        // return view('dictionary.create');
+        return view('dictionary.create');
     }
 
     /**
@@ -47,9 +49,13 @@ class DictionaryController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'name' => ['required', 'max:50', Rule::notIn(Dictionary::where('fk_user_id', '=', auth()->user()->id)->pluck('name'))],
+            'name' => ['required', 'max:50', Rule::unique('dictionaries', 'name')->where(function ($query) {
+                return $query->where('fk_user_id', auth()->user()->id);
+            })],
             'description' => 'max:500',
             'visibility' => [new Enum(Visibility::class)],
+            'tags' => 'array',
+            'tags.*' => 'uuid|exists:tags,id',
         ]);
 
         $dictionary = Dictionary::create([
@@ -58,10 +64,18 @@ class DictionaryController extends Controller
             'visibility' => $validated['visibility'],
             'fk_user_id' => $request->user()->id,
         ]);
-
         $dictionary->save();
+        foreach ($validated['tags'] as $tag) {
+            $tagModel = Tag::find($tag);
+            $dictionary->tags()->attach($tagModel->id, ['id' => Str::uuid()]);
+        }
 
-        return redirect('/my');
+
+        return redirect(route('my'))
+            ->with(
+                'success',
+                __('shared.entity.created', ['entity' => __('entities.dictionary.singular')])
+            );
     }
 
     /**
@@ -72,7 +86,7 @@ class DictionaryController extends Controller
 
         $dictionary = Dictionary::findOrFail($id);
 
-        if($dictionary->visibility == Visibility::PRIVATE && $dictionary->fk_user_id !== auth()->user()->id) {
+        if ($dictionary->visibility == Visibility::PRIVATE && $dictionary->fk_user_id !== auth()->user()->id) {
             return abort(404);
         }
 
@@ -104,17 +118,39 @@ class DictionaryController extends Controller
         $dictionary = Dictionary::where('fk_user_id', '=', auth()->user()->id)->findOrFail($dictionaryId);
 
         $validated = $request->validate([
-            'name' => ['required', 'max:50', Rule::notIn(Dictionary::where('fk_user_id', '=', auth()->user()->id)->pluck('name'))],
+            'name' => ['required', 'max:50', Rule::unique('dictionaries', 'name')->where(function ($query) {
+                return $query->where('fk_user_id', auth()->user()->id);
+            })->ignore($dictionary->id)],
             'description' => 'max:500',
             'visibility' => [new Enum(Visibility::class)],
+            'tags' => 'array',
+            'tags.*' => 'uuid|exists:tags,id',
         ]);
-
         $dictionary->name = $validated['name'];
         $dictionary->description = $validated['description'];
         $dictionary->visibility = $validated['visibility'];
+
+        $newTags = $validated['tags'];
+        Log::info('New tags: ' . json_encode($newTags));
+        // Detach tags that are not present in the new list
+        $dictionaryTags = $dictionary->tags()->pluck('tags.id')->toArray();
+        foreach ($dictionaryTags as $id) {
+            if (!in_array($id, $validated['tags'])) {
+                Log::info('Detaching tag: ' . $id);
+                $dictionary->tags()->detach($id);
+            }
+        }
+        // Attach tags that are present in the new list but not in the existing dictionary
+        foreach ($validated['tags'] as $tagId) {
+            if (!in_array($tagId, $dictionaryTags)) {
+                Log::info('Attaching tag: ' . $tagId);
+                $dictionary->tags()->attach($tagId, ['id' => Str::uuid()]);
+            }
+        }
+
         $dictionary->updateOrFail($validated);
 
-        return redirect(route('my'));
+        return redirect(route('my'))->with('success', 'Словарь обновлен');
     }
 
     /**

@@ -17,10 +17,12 @@ class AttributeController extends Controller
      */
     public function index()
     {
-        $attributes = Attribute::paginate(15);
+        $query = Attribute::query();
         if (request('search')) {
-            $attributes = Attribute::where('name', 'ilike', '%' . request('search') . '%');
+            $query->where('name', 'ilike', '%' . request('search') . '%');
         }
+
+        $attributes = $query->paginate(15);
 
         return view('attribute.index', compact('attributes'));
     }

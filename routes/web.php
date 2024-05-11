@@ -55,12 +55,15 @@ Route::middleware('auth')->group(function () {
 
 Route::resource('/my', DictionaryController::class)
     ->middleware(['auth', 'verified'])
-    ->name('index', 'my')
-    ->name('store', 'dictionary.store')
-    ->name('edit', 'dictionary.edit')
-    ->name('destroy', 'dictionary.destroy')
-    ->name('update', 'dictionary.update')
-    ->name('show', 'dictionary.show');
+    ->names([
+        'index' => 'my',
+        'create' => 'dictionary.create',
+        'store' => 'dictionary.store',
+        'edit' => 'dictionary.edit',
+        'destroy' => 'dictionary.destroy',
+        'update' => 'dictionary.update',
+        'show' => 'dictionary.show',
+    ]);
 
 Route::get('/my/{dictionary}/dashboard', [DictionaryController::class, 'show'])
     ->name('dictionary.show')
@@ -74,8 +77,8 @@ Route::resource('/my/{dictionary}/concept/', ConceptController::class)
         'store' => 'concept.store',
     ]);
 Route::put('/my/{dictionary}/concept/{concept}', [ConceptController::class, 'update'])
-->name('concept.update')
-->middleware(['auth', 'verified']);
+    ->name('concept.update')
+    ->middleware(['auth', 'verified']);
 Route::get('/my/{dictionary}/concept/{concept}', [ConceptController::class, 'edit'])
     ->name('concept.edit')
     ->middleware(['auth', 'verified']);
@@ -130,6 +133,18 @@ Route::resource('concept/{concept}/example', ConceptAttributeValueController::cl
         'update' => 'concept.example.update',
         'edit' => 'concept.example.edit',
     ]);
+
+Route::resource('tags', TagController::class)
+    ->names([
+        'create' => 'tag.create',
+        'store' => 'tag.store',
+        'destroy' => 'tag.destroy',
+        'update' => 'tag.update',
+        'edit' => 'tag.edit',
+        'index' => 'tag.index',
+    ])
+    ->middleware(['auth', 'verified']);
+
 
 Route::fallback(function () {
     return view('errors.404');
