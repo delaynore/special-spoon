@@ -1,3 +1,5 @@
+@props(['dictionaries'])
+
 <x-layout.main>
     <x-slot:title>{{ __('dictionary-page.title') }}</x-slot:title>
 
@@ -66,7 +68,7 @@
                     @endempty
                     @isset($dictionaries)
                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 text-center">
                             <tr>
                                 <th scope="col" class="px-4 py-3">{{ __('dictionary-page.table.headers.name') }}</th>
                                 <th scope="col" class="px-4 py-3">{{ __('dictionary-page.table.headers.description') }}</th>
@@ -78,7 +80,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @each('dictionary.item', $dictionaries, 'dictionary')
+                            @each('dictionary.item', $dictionaries->items(), 'dictionary')
                         </tbody>
                     </table>
                     <div class="my-2 mx-4">

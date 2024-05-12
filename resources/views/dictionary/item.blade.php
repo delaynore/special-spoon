@@ -1,6 +1,7 @@
 @props(['dictionary'])
-<tr class="last:border-b-0 border-b dark:border-gray-700">
-    <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white {{$dictionary->visibility == \App\Enums\Visibility::PRIVATE ? 'flex items-center' : ''}}">{{ $dictionary->name}}
+
+<tr class="last:border-b-0 border-b dark:border-gray-700 !h-[20px]">
+    <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white  {{$dictionary->visibility == \App\Enums\Visibility::PRIVATE ? 'flex items-center' : ''}}">{{ $dictionary->name}}
         @if ($dictionary->visibility == \App\Enums\Visibility::PRIVATE)
         <span class="ml-2 bg-gray-900 rounded-full dark:bg-gray-200">
             <svg class="m-1 w-3 h-3 dark:text-gray-800 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -10,10 +11,12 @@
 
         @endif
     </th>
-    <td class="px-4 py-3 max-w-48 overflow-hidden text-wrap text-ellipsis" title="{{ $dictionary->description}}">{{ $dictionary->description}}</td>
-    <td class="px-4 py-3">{{ $dictionary->created_at->timezone('Europe/Samara')->translatedFormat('j F Y H:i')}}</td>
-    <td class="px-4 py-3 flex justify-center">
-        <a class="cursor-pointer inline-flex items-center py-2.5 px-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" href="{{ url('/my', $dictionary->id)}}">
+    <td class="px-4 py-3 max-w-48" title="{{ $dictionary->description}}">
+        <p class="text-3">{{ $dictionary->description}}</p>
+    </td>
+    <td class="px-4 py-3 text-center">{{ $dictionary->created_at->timezone('Europe/Samara')->translatedFormat('j F Y H:i')}}</td>
+    <td class="px-4 py-3 text-center">
+        <a class="cursor-pointer inline-flex items-center py-2.5 px-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" href="{{ route('dictionary.show', $dictionary)}}">
             <svg class="w-4 h-4 me-2 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                 <path fill-rule="evenodd" d="M11 4.717c-2.286-.58-4.16-.756-7.045-.71A1.99 1.99 0 0 0 2 6v11c0 1.133.934 2.022 2.044 2.007 2.759-.038 4.5.16 6.956.791V4.717Zm2 15.081c2.456-.631 4.198-.829 6.956-.791A2.013 2.013 0 0 0 22 16.999V6a1.99 1.99 0 0 0-1.955-1.993c-2.885-.046-4.76.13-7.045.71v15.081Z" clip-rule="evenodd" />
             </svg>
@@ -21,7 +24,7 @@
             {{ __('shared.submit.open')}}
         </a>
     </td>
-    <td class="px-4 py-3">
+    <td class="px-4 py-3 text-center">
         <button id="{{$dictionary->id}}-button" data-dropdown-toggle="{{$dictionary->id}}" class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100" type="button">
             <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
@@ -30,7 +33,7 @@
         <div id="{{$dictionary->id}}" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
             <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="{{$dictionary->id}}-button">
                 <li>
-                    <form action="{{route('dictionary.show', $dictionary->id)}}" method="get">
+                    <form action="{{route('dictionary.show', $dictionary)}}" method="GET">
                         @csrf
                         <button type="submit" class="w-full flex items-center justify-between py-2 px-4 text-sm text-gray-700 hover:bg-gray-100  dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
                             {{__('shared.submit.open')}}
@@ -43,7 +46,7 @@
                 </li>
 
                 <li>
-                    <a href="{{ route('dictionary.edit', $dictionary->id) }}" class="flex items-center justify-between py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{__('shared.edit')}}
+                    <a href="{{ route('dictionary.edit', $dictionary) }}" class="flex items-center justify-between py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{__('shared.edit')}}
                         <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z" />
                         </svg>
@@ -60,9 +63,9 @@
                 </div>
             </div>
             <div class="py-1">
-                <form action="{{route('dictionary.destroy', $dictionary->id)}}" method="post">
+                <form action="{{route('dictionary.destroy', $dictionary)}}" method="POST">
                     @csrf
-                    @method('delete')
+                    @method('DELETE')
                     <button type="submit" class="w-full flex items-center justify-between py-2 px-4 text-sm text-gray-700 hover:bg-gray-100  dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
                         {{ __('shared.submit.delete')}}
                         <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">

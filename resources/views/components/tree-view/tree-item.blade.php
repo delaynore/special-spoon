@@ -8,7 +8,12 @@ $unique = Str::random(5);
 <h2 id="header-{{$concept->id}} " class="w-full">
     <div data-dropdown-trigger="click" data-dropdown-toggle="dropdown{{$concept->id}}" data-dropdown-placement="right" data-dropdown-offset-skidding="100">
         <button type="button" class="flex border-2 border-gray-100 hover:border-gray-300  items-center justify-between w-full px-2 py-1 font-medium text-gray-500   dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-sm" data-accordion-target="#body-{{$concept->id}}" aria-expanded="false" aria-controls="body-{{$concept->id}}">
+            <div class="">
+            @if ($concept->fk_parent_concept_id)
+                <span class="text-gray-300 -ml-3 mr-1">-</span>
+            @endif
             <span class="overflow-hidden text-ellipsis">{{$concept->name}}</span>
+            </div>
             <x-tree-view.icon />
         </button>
     </div>
@@ -17,7 +22,6 @@ $unique = Str::random(5);
     <div class="ms-1 border-l-2">
         <!-- Nested accordion -->
         <div id="{{$unique}}" data-accordion="open">
-
             @each('components.tree-view.tree-item', $children, 'concept')
 
         </div>
@@ -27,7 +31,10 @@ $unique = Str::random(5);
 @else
 
 <h2 class="w-full">
-    <div data-dropdown-trigger="click" data-dropdown-toggle="dropdown{{$concept->id}}" data-dropdown-placement="right" data-dropdown-offset-skidding="100" class="flex border-2 border-gray-100 hover:border-gray-300  items-center justify-between w-full px-2 py-1 font-medium text-gray-500  focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-sm">
+    <div data-dropdown-trigger="click" data-dropdown-toggle="dropdown{{$concept->id}}" data-dropdown-placement="right" data-dropdown-offset-skidding="100" class="justify-start flex border-2 border-gray-100 hover:border-gray-300  items-center w-full px-2 py-1 font-medium text-gray-500  focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-sm">
+        @if ($concept->fk_parent_concept_id)
+            <span class="text-gray-300 -ml-3 mr-1">-</span>
+        @endif
         {{$concept->name}}
     </div>
 </h2>

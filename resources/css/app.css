@@ -11,3 +11,10 @@
 .el {
     @apply text-primary-700 visited:text-purple-700 underline-offset-2 underline dark:text-blue-400  dark:visited:text-purple-400
 }
+
+.text-3 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+  }

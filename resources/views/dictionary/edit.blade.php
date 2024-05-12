@@ -8,7 +8,7 @@
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                         {{ __('dictionary-page.edit.title') }}
                     </h3>
-                    <a href="{{url()->previous()}}" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                    <a href="{{ route('my') }}" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
                         <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
                         </svg>
@@ -27,8 +27,8 @@
                         <div class="col-span-2">
                             <label for="visibility" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{__('dictionary-page.edit.visibility.label')}}</label>
                             <select id="visibility" name="visibility" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                <option value="public" @selected($dictionary->visibility == App\Enums\Visibility::PUBLIC)>{{ __('dictionary-page.edit.visibility.public') }}</option>
-                                <option value="private" @selected($dictionary->visibility == App\Enums\Visibility::PRIVATE)>{{ __('dictionary-page.create.visibility.private') }}</option>
+                                <option value="public" @selected((old('visibility') ?? $dictionary->visibility->value) == App\Enums\Visibility::PUBLIC->value)>{{ __('dictionary-page.edit.visibility.public') }}</option>
+                                <option value="private" @selected((old('visibility') ?? $dictionary->visibility->value) == App\Enums\Visibility::PRIVATE->value)>{{ __('dictionary-page.create.visibility.private') }}</option>
                             </select>
                             <x-input-error :messages="$errors->get('visibility')" class="mt-2" />
                         </div>
@@ -39,13 +39,13 @@
                                 $tags = \App\Models\Tag::all();
                                 @endphp
                                 @foreach($tags as $tag)
-                                <option value="{{ $tag->id }}" @selected(in_array($tag->id, $dictionary->tags->pluck('id')->toArray())) >{{ $tag->name }}</option>
+                                <option value="{{ $tag->id }}" @selected(in_array($tag->id, old('tags') ?? $dictionary->tags->pluck('id')->toArray())) >{{ $tag->name }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="sm:col-span-2">
                             <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ __('dictionary-page.edit.description.label')}}</label>
-                            <textarea id="description" name="description" rows="4" class="block p-2.5 w-full min-h-12 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="{{__('dictionary-page.edit.description.placeholder')}}">{{$dictionary->description}}</textarea>
+                            <textarea maxlength="500" id="description" name="description" rows="4" class="block p-2.5 w-full min-h-12 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="{{__('dictionary-page.edit.description.placeholder')}}">{{old('description') ?? $dictionary->description}}</textarea>
                         </div>
                         <x-input-error :messages="$errors->get('description')" class="mt-2" />
                     </div>

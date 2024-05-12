@@ -9,6 +9,8 @@ use App\Models\Tag;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
@@ -24,6 +26,8 @@ class DictionaryController extends Controller
      */
     public function index(): View
     {
+        Gate::authorize('index-dictionary');
+
         $dictionaries = Dictionary::where('fk_user_id', auth()->user()->id);
         if (request('search')) {
             $dictionaries = $dictionaries->where('name', 'ilike', '%' . request('search') . '%');
@@ -40,6 +44,8 @@ class DictionaryController extends Controller
      */
     public function create()
     {
+        Gate::authorize('create-dictionary');
+
         return view('dictionary.create');
     }
 
@@ -48,6 +54,8 @@ class DictionaryController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        Gate::authorize('store-dictionary');
+
         $validated = $request->validate([
             'name' => ['required', 'max:50', Rule::unique('dictionaries', 'name')->where(function ($query) {
                 return $query->where('fk_user_id', auth()->user()->id);
@@ -81,10 +89,9 @@ class DictionaryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id): View
+    public function show(Dictionary $dictionary): View
     {
-
-        $dictionary = Dictionary::findOrFail($id);
+        Gate::authorize('show-dictionary', $dictionary);
 
         if ($dictionary->visibility == Visibility::PRIVATE && $dictionary->fk_user_id !== auth()->user()->id) {
             return abort(404);
@@ -102,11 +109,14 @@ class DictionaryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id): View
+    public function edit(string $dictionaryId): View
     {
+        $dictionary = Dictionary::find($dictionaryId);
+        Gate::authorize('edit-dictionary', $dictionary);
+
         return view(
             'dictionary.edit',
-            ['dictionary' => Dictionary::where('fk_user_id', '=', auth()->user()->id)->findOrFail($id)]
+           compact('dictionary')
         );
     }
 
@@ -115,7 +125,8 @@ class DictionaryController extends Controller
      */
     public function update(Request $request, string $dictionaryId): RedirectResponse
     {
-        $dictionary = Dictionary::where('fk_user_id', '=', auth()->user()->id)->findOrFail($dictionaryId);
+        $dictionary = Dictionary::find($dictionaryId);
+        Gate::authorize('update-dictionary', $dictionary);
 
         $validated = $request->validate([
             'name' => ['required', 'max:50', Rule::unique('dictionaries', 'name')->where(function ($query) {
@@ -156,9 +167,10 @@ class DictionaryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id): RedirectResponse
+    public function destroy(string $dictionaryId): RedirectResponse
     {
-        $dictionary = Dictionary::where('fk_user_id', '=', auth()->user()->id)->findOrFail($id);
+        $dictionary = Dictionary::find($dictionaryId);
+        Gate::authorize('destroy-dictionary', $dictionary);
 
         $dictionary->delete();
 
@@ -167,7 +179,11 @@ class DictionaryController extends Controller
 
     public function export(string $id)
     {
+
         $dictionary = Dictionary::where('fk_user_id', '=', auth()->user()->id)->findOrFail($id);
+
+        Gate::authorize('export-dictionary', $dictionary);
+
         $concepts = $dictionary->concepts()->pluck('name');
         if (count($concepts) == 0) {
             return redirect()->back()->with('export.error', 'В словаре нет понятий');

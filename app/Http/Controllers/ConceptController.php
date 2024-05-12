@@ -88,8 +88,8 @@ class ConceptController extends Controller
             'definition' => 'max:1000',
             'parent' => [Rule::excludeIf(empty($request->input('parent'))), 'uuid', Rule::in($dictionary->concepts->pluck('id'))],
         ]);
-
-        if ($validated['parent']) {
+        
+        if (in_array('parent', $validated)) {
             $children = $concept->allChildren();
             $searchId = $validated['parent'];
             $filtered = array_filter($children, function ($child) use ($searchId) {
@@ -106,6 +106,7 @@ class ConceptController extends Controller
                 }
             }
         }
+
 
         $concept->updateOrFail([
             'name' => $validated['name'],
