@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
  * @property string $name
  * @property string $definition
  * @property string $fk_dictionary_id
+ * @property string $fk_parent_concept_id
  */
 class Concept extends Model
 {
