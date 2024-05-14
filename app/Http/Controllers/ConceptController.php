@@ -25,9 +25,8 @@ class ConceptController extends Controller
     public function create(Dictionary $dictionary)
     {
 
-        if ($dictionary->fk_user_id != auth()->user()->id) {
-            return abort(404);
-        }
+        Gate::authorize("must-be-owner", $dictionary);
+
         if (request()->get('parentId') == null) {
             return view('concept.create', compact('dictionary'));
         }
@@ -41,6 +40,8 @@ class ConceptController extends Controller
      */
     public function store(Request $request, string $dictionaryId)
     {
+        $dictionary = Dictionary::findOrFail($dictionaryId);
+        Gate::authorize('must-be-owner', $dictionary);
         $validated = $request->validate([
             'name' => ['required', 'max:50', Rule::notIn(Dictionary::find($dictionaryId)->concepts()->pluck('name'))],
             'definition' => 'max:1000',
@@ -75,6 +76,7 @@ class ConceptController extends Controller
      */
     public function edit(Dictionary $dictionary, Concept $concept)
     {
+        Gate::authorize('must-be-owner', $concept->dictionary);
         return view('concept.edit', compact('dictionary', 'concept'));
     }
 
@@ -83,12 +85,14 @@ class ConceptController extends Controller
      */
     public function update(Request $request, Dictionary $dictionary, Concept $concept)
     {
+        Gate::authorize('must-be-owner', $concept->dictionary);
+
         $validated = $request->validate([
             'name' => ['required', 'max:50', Rule::notIn($dictionary->concepts->where('id', '!=', $concept->id)->pluck('name'))],
             'definition' => 'max:1000',
             'parent' => [Rule::excludeIf(empty($request->input('parent'))), 'uuid', Rule::in($dictionary->concepts->pluck('id'))],
         ]);
-        
+
         if (in_array('parent', $validated)) {
             $children = $concept->allChildren();
             $searchId = $validated['parent'];
@@ -124,7 +128,7 @@ class ConceptController extends Controller
     public function destroy(Request $request, string $dictionaryId, string $conceptId)
     {
         $concept = Concept::findOrFail($conceptId);
-        //Gate::authorize('delete', [Auth::user(), $concept]);
+        Gate::authorize('must-be-owner', $concept->dictionary);
 
         $concept->deleteOrFail();
 
@@ -137,5 +141,13 @@ class ConceptController extends Controller
         $concept = Concept::findOrFail($concept);
         $dictionary = Dictionary::findOrFail($dictionary);
         return view('concept.examples', compact('dictionary', 'concept', 'concepts'));
+    }
+
+    public function attachments(string $dictionary, string $concept){
+        $concepts = Dictionary::findOrFail($dictionary)->rootConcepts();
+        $concept = Concept::findOrFail($concept);
+        $dictionary = Dictionary::findOrFail($dictionary);
+        $attachments = $concept->attachements()->get();
+        return view('components.dashboard.tabs.attachments', compact('dictionary', 'concept', 'concepts', 'attachments'));
     }
 }

@@ -19,7 +19,7 @@
         </span>
     </a>
 
-    <a class="hover:text-blue-600 dark:hover:text-blue-500 inline-flex items-center h-12 px-2 py-2 text-center text-gray-700 bg-transparent border-b border-gray-300 sm:px-4 dark:border-gray-500 -px-1 dark:text-white whitespace-nowrap cursor-base focus:outline-none hover:border-gray-400 dark:hover:border-gray-300">
+    <a href="{{Route::currentRouteName() == 'concept.attachments' ? "#" :route('concept.attachments', ['dictionary' => $dictionary, 'concept' => $concept])}}" class="{{Route::currentRouteName() == 'concept.attachments' ? 'border border-b-0 rounded-t-md' : 'bg-transparent border-b'}} hover:text-blue-600 dark:hover:text-blue-500 inline-flex items-center h-12 px-2 py-2 text-center text-gray-700 bg-transparent border-b border-gray-300 sm:px-4 dark:border-gray-500 -px-1 dark:text-white whitespace-nowrap cursor-base focus:outline-none hover:border-gray-400 dark:hover:border-gray-300">
         <svg class="w-4 h-4 mx-1 sm:w-6 sm:h-6" data-slot="icon" aria-hidden="true" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path d="m18.375 12.739-7.693 7.693a4.5 4.5 0 0 1-6.364-6.364l10.94-10.94A3 3 0 1 1 19.5 7.372L8.552 18.32m.009-.01-.01.01m5.699-9.941-7.81 7.81a1.5 1.5 0 0 0 2.112 2.13" stroke-linecap="round" stroke-linejoin="round"></path>
         </svg>

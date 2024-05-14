@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\ConceptAttributeController;
 use App\Http\Controllers\ConceptAttributeValueController;
@@ -92,6 +93,14 @@ Route::delete('/my/{dictionary}/concept/{concept}', [ConceptController::class, '
 
 Route::get('/my/{dictionary}/examples/{concept}', [ConceptController::class, 'examples'])->name('concept.examples')
     ->middleware(['auth', 'verified']);
+    Route::get('/my/{dictionary}/attachments/{concept}', [ConceptController::class, 'attachments'])->name('concept.attachments')
+    ->middleware(['auth', 'verified']);
+
+// Attachments for concept
+Route::post('/my/{dictionary}/attachments/{concept}', [AttachmentController::class, 'store'])->name('attachment.store')
+->middleware(['auth', 'verified']);
+Route::get('/my/{dictionary}/attachments/{concept}/create', [AttachmentController::class, 'create'])->name('attachment.create');
+Route::delete('/my/{dictionary}/attachments/{concept}/{attachment}', [AttachmentController::class, 'destroy'])->name('attachment.destroy');
 
 Route::get('/tags', [TagController::class, 'index']);
 
