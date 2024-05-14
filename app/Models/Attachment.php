@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\AttachmentType;
 use App\Enums\DataType;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -14,10 +15,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $name
  * @property DataType $type
  * @property string $path
- * @property string $fkConceptId
- * @property string $fkUserId
- * @property Carbon $createdAt
- * @property Carbon $updatedAt
+ * @property string $fk_concept_id
+ * @property string $fk_user_id
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
  */
 class Attachment extends Model
 {
@@ -37,15 +38,12 @@ class Attachment extends Model
     protected $fillable = [
         'name',
         'type',
-        'fk_concept_id'
+        'fk_concept_id',
+        'fk_user_id',
+        'path',
     ];
 
     protected $casts = [
-        'id' => 'uuid',
-        'name' => 'string',
-        'type' => DataType::class,
-        'path' => 'string',
-        'fk_concept_id' => 'uuid',
-        'fk_user_id' => 'uuid',
+        'type' => AttachmentType::class,
     ];
 }

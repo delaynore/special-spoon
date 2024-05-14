@@ -51,5 +51,12 @@ class AppServiceProvider extends ServiceProvider
             return Auth::check();
         });
         #endregion
+
+        #region Concept gates
+
+        Gate::define('must-be-owner', function (User $user, Dictionary $dictionary) {
+            return $user->id === $dictionary->fk_user_id;
+        });
+        #endregion
     }
 }

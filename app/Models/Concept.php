@@ -29,7 +29,7 @@ class Concept extends Model
 
     public function attachements(): HasMany
     {
-        return $this->hasMany(Attachment::class);
+        return $this->hasMany(Attachment::class, 'fk_concept_id');
     }
 
     public function attributes(): BelongsToMany
