@@ -31,23 +31,23 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="font-sans antialiased flex flex-col min-h-screen w-full">
-    <div class="flex flex-col flex-grow bg-gray-100 dark:bg-gray-900 w-full">
+<body class="flex flex-col w-full min-h-screen font-sans antialiased">
+    <div class="flex flex-col flex-grow w-full bg-gray-100 dark:bg-gray-900">
         @if (isset($navigation))
         @include('components.navigation.navbar')
         @endif
 
         <!-- Page Heading
         @if (isset($header))
-        <header class="bg-white dark:bg-gray-800 shadow">
-            <div class="flex flex-col md:flex-row md:justify-between items-center max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <header class="bg-white shadow dark:bg-gray-800">
+            <div class="flex flex-col items-center px-4 py-6 mx-auto md:flex-row md:justify-between max-w-7xl sm:px-6 lg:px-8">
                 {{ $header }}
             </div>
         </header>
         @endif -->
 
         <!-- Page Content -->
-        <main class="flex-grow flex w-full">
+        <main class="flex flex-grow w-full">
             @if (isset($slot))
             {{ $slot }}
             @endif

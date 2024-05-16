@@ -1,6 +1,6 @@
 <x-layout.main>
     <x-slot name="navigation"></x-slot>
-    <section class="bg-white dark:bg-gray-900 w-full flex justify-center">
+    <section class="flex justify-center w-full bg-white dark:bg-gray-900">
         <div class="container flex items-center justify-center">
             <div class="flex flex-col items-center max-w-sm mx-auto text-center">
                 <p class="p-3 text-sm font-medium text-blue-500 rounded-full bg-blue-50 dark:bg-gray-800">

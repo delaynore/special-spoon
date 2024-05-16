@@ -1,4 +1,4 @@
-<button type="button" class="flex py-1 px-2 text-sm rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
+<button type="button" class="flex px-2 py-1 text-sm rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
     <span class="sr-only">Open user menu</span>
     <span class="block text-sm text-gray-900 dark:text-white">{{Auth::user()->name}}</span>
 </button>
@@ -6,7 +6,7 @@
 @auth
 <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600" id="user-dropdown">
     <div class="px-4 py-3">
-        <span class="block text-sm  text-gray-500 truncate dark:text-gray-400">{{Auth::user()->email}}</span>
+        <span class="block text-sm text-gray-500 truncate dark:text-gray-400">{{Auth::user()->email}}</span>
     </div>
 
     <ul class="py-2" aria-labelledby="user-menu-button">

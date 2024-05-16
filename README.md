@@ -49,5 +49,6 @@
    1. [x] Атрибуты
    2. [x] Теги 
    3. [x] Главная 
-   4. [x] Error pages 
+   4. [x] Error pages
+   5. [x] Auth 
     

@@ -41,7 +41,7 @@ $dictionary = $concept->dictionary()->first();
     @endcan
 </div>
 <div class="overflow-x-auto overflow-y-scroll shadow-md sm:rounded-lg">
-    <table class="w-full text-sm text-gray-500 dark:text-gray-400 text-center">
+    <table class="w-full text-sm text-center text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
                 <th scope="col" class="px-2 py-3">

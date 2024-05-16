@@ -3,9 +3,9 @@
 <x-layout.dashboard :dictionary="$dictionary" :concepts="$concepts">
     @include('components.dashboard.tabs.tabs')
     <div class="w-full p-2.5">
-        <div class="flex justify-between items-center mb-3">
+        <div class="flex items-center justify-between mb-3">
             <div class="flex-grow-1">
-                <h5 class="text-2xl font-bold text-gray-900 dark:text-white text-wrap break-words">{{$concept->name}}</h5>
+                <h5 class="text-2xl font-bold text-gray-900 break-words dark:text-white text-wrap">{{$concept->name}}</h5>
             </div>
             <div class="">
                 @can('must-be-owner', $concept->dictionary)

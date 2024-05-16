@@ -1,6 +1,6 @@
 <?php
 
-use App\Enums\AttacmentType;
+use App\Enums\AttachmentType;
 use App\Enums\DataType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -47,7 +47,7 @@ return new class extends Migration
         Schema::create('attachments', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name',255);
-            $table->enum('type', array_column(AttacmentType::cases(), 'value'));
+            $table->enum('type', array_column(AttachmentType::cases(), 'value'));
             $table->string('path', 255);
             $table->foreignUuid('fk_user_id')->references('id')->on('users')->nullOnDelete();
             $table->foreignUuid('fk_concept_id')->references('id')->on('concepts')->cascadeOnDelete();
