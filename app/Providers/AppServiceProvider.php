@@ -57,6 +57,15 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('must-be-owner', function (User $user, Dictionary $dictionary) {
             return $user->id === $dictionary->fk_user_id;
         });
+
+        Gate::define('redactor', function (User $user) {
+            return $user->is_redactor || $user->is_admin;
+        });
+
+        Gate::define('admin', function (User $user) {
+            return $user->is_admin;
+        });
+
         #endregion
     }
 }

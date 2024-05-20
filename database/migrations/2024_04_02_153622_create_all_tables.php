@@ -17,7 +17,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('fk_dictionary_id')->references('id')->on('dictionaries')->cascadeOnDelete();
             $table->string('name', 255);
-            $table->string('definition', 1000);
+            $table->string('definition', 1000)->nullable();
             $table->timestampsTz();
 
             $table->unique(['fk_dictionary_id','name']);
@@ -28,7 +28,7 @@ return new class extends Migration
         Schema::create('relation_types', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name', 255);
-            $table->string('description', 1000);
+            $table->string('description', 1000)->nullable();
             $table->timestampsTz();
 
             $table->unique('name');

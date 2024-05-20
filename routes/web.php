@@ -5,10 +5,14 @@ use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\ConceptAttributeController;
 use App\Http\Controllers\ConceptAttributeValueController;
 use App\Http\Controllers\ConceptController;
+use App\Http\Controllers\ConceptRelationController;
 use App\Http\Controllers\DictionaryController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RelationTypeController;
 use App\Http\Controllers\TagController;
 use App\Models\Concept;
+use App\Models\ConceptRelation;
+use App\Models\RelationType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -153,6 +157,15 @@ Route::resource('tags', TagController::class)
         'index' => 'tag.index',
     ])
     ->middleware(['auth', 'verified']);
+
+Route::resource('relations', RelationTypeController::class)->names([
+    'create' => 'relation-type.create',
+    'store' => 'relation-type.store',
+    'destroy' => 'relation-type.destroy',
+    'update'=> 'relation-type.update',
+    'edit'=> 'relation-type.edit',
+    'index' => 'relation-type.index',
+])->middleware('auth');
 
 
 Route::fallback(function () {

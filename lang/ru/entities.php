@@ -25,4 +25,12 @@ return [
         'singular' => 'Вложение',
         'plural' => 'Вложения',
     ],
+    'relation-types' => [
+        'singular' => 'Тип отношения',
+        'plural' => 'Типы отношений',
+        'props' => [
+            'name' => 'Название',
+            'description' => 'Описание',
+        ],
+    ],
 ];

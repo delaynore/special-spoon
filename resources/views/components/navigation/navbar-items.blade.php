@@ -25,6 +25,9 @@
                     <x-navigation.secondary-item href="{{route('tag.index')}}">
                         {{ __('Теги') }}
                     </x-navigation.secondary-item>
+                    <x-navigation.secondary-item href="{{route('relation-type.index')}}">
+                        {{ __('Отношения') }}
+                    </x-navigation.secondary-item>
                 </ul>
                 <div class="w-full py-1">
                     <form method="POST" action="{{ route('logout') }}">
