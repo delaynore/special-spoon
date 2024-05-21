@@ -1,6 +1,7 @@
 @props(['dictionary', 'concepts', 'concept'])
 
 <x-layout.dashboard :dictionary="$dictionary" :concepts="$concepts">
+    @include('components.dashboard.tabs.breadcrumbs', [$concept])
     @include('components.dashboard.tabs.tabs')
     <div class="w-full p-2.5">
         <div class="flex items-center justify-between mb-3">
