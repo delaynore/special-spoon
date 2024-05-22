@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @property string $name
+ * @property string $description
+ * @property mixed $name_plural
+ */
 class RelationType extends Model
 {
     use HasFactory, HasUuids;
@@ -19,5 +24,6 @@ class RelationType extends Model
     protected $fillable = [
         'name',
         'description',
+        'name_plural',
     ];
 }

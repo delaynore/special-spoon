@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class TagController extends Controller
 {
@@ -54,6 +55,7 @@ class TagController extends Controller
      */
     public function edit(Tag $tag)
     {
+        Gate::authorize('redactor');
         return view('tag.edit', compact('tag'));
     }
 
@@ -62,6 +64,8 @@ class TagController extends Controller
      */
     public function update(Request $request, Tag $tag)
     {
+        Gate::authorize('redactor');
+
         $validated = $request->validate([
             'name' => 'required|unique:tags,name,' . $tag->id . '|max:50',
         ]);
@@ -80,6 +84,8 @@ class TagController extends Controller
      */
     public function destroy(Tag $tag)
     {
+        Gate::authorize('admin');
+
         $tag->deleteOrFail();
 
         return redirect()->back()

@@ -7,6 +7,7 @@ use App\Models\Attribute;
 use App\Http\Requests\StoreAttributeRequest;
 use App\Http\Requests\UpdateAttributeRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 
@@ -61,6 +62,7 @@ class AttributeController extends Controller
      */
     public function edit(Attribute $attribute)
     {
+        Gate::authorize('redactor');
         return view('attribute.edit', compact('attribute'));
     }
 
@@ -69,6 +71,8 @@ class AttributeController extends Controller
      */
     public function update(Request $request, Attribute $attribute)
     {
+        Gate::authorize('redactor');
+
         $validated = $request->validate([
             'name' => ['required', 'max:255', Rule::unique('attributes')->ignore($attribute->id)],
             'type' => [new Enum(DataType::class)],
@@ -83,6 +87,8 @@ class AttributeController extends Controller
      */
     public function destroy(Attribute $attribute)
     {
+        Gate::authorize('admin');
+
         if ($attribute->concepts()->count() > 0) {
             return redirect()->back()->with('attribute.delete.error', 'Атрибут не может быть удален, так как он используется в словарях. Удалите его из словарей');
         }

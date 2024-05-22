@@ -15,14 +15,14 @@ $active = 'bg-blue-200 dark:bg-sky-800 hover:bg-blue-200 dark:hover:bg-sky-800 t
                 @if ($concept->fk_parent_concept_id)
                 <span class="text-gray-400 -ml-[10px] mr-1">-</span>
                 @endif
-                <span class="overflow-hidden text-ellipsis">{{$concept->name}}</span>
+                <span class="overflow-hidden select-text text-ellipsis">{{$concept->name}}</span>
             </div>
             <x-tree-view.icon />
         </button>
     </div>
 </h2>
 <div id="body-{{$concept->id}}" class="hidden" aria-labelledby="header-{{$concept->id}}">
-    <div class="border-l-2 border-gray-400 ms-1">
+    <div class="border-l-2 border-gray-400 select-text ms-1">
         <!-- Nested accordion -->
         <div id="{{$unique}}" data-accordion="open" data-inactive-classes="text-inherit" data-active-classes="{{$active}}">
             @each('components.tree-view.tree-item', $children, 'concept')

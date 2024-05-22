@@ -1,4 +1,14 @@
-@props(['headers', 'rows', 'names', 'editRouteName', 'deleteRouteName', 'isPaginated' => true, 'entityName'])
+@props([
+    'headers',
+    'rows',
+    'names',
+    'editRouteName',
+    'deleteRouteName',
+    'isPaginated' => true,
+    'entityName',
+    'deleteGateName' => 'admin',
+    'editGateName' => 'redactor',
+])
 
 <div class="overflow-x-auto overflow-y-scroll shadow-md sm:rounded-lg">
     <table class="w-full text-sm text-center text-gray-500 dark:text-gray-400">
@@ -21,14 +31,18 @@
             @foreach ($rows as $row)
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                 @foreach ($names as $name)
-                <th scope="row" class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    {{ $row->$name }}
+                <th title="{{$row->$name}}" scope="row" class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap max-w-[200px] dark:text-white">
+                    <p class="text-3">
+                        {{ $row->$name }}
+                    </p>
                 </th>
                 @endforeach
-
+                @can($editGateName)
                 <td class="px-2 py-2">
                     <a href="{{route($editRouteName, $row->id)}}" class="font-medium text-green-600 dark:text-green-500 hover:underline">{{ __('shared.edit')}}</a>
                 </td>
+                @endcan
+                @can($deleteGateName)
                 <td class="px-2 py-2">
                     <div class="flex justify-center">
                         <button id="delete-{{$row->name}}" data-modal-target="delete-entity-{{$row->id}}" data-modal-toggle="delete-entity-{{$row->id}}" class="font-medium text-red-600 dark:text-red-500 hover:underline" type="button">
@@ -66,6 +80,7 @@
                     </div>
                     <!--  -->
                 </td>
+                @endcan
             </tr>
             @endforeach
         </tbody>

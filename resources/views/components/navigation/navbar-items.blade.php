@@ -20,10 +20,13 @@
                         {{ __('Настройки') }}
                     </x-navigation.secondary-item>
                     <x-navigation.secondary-item href="{{route('attribute.index')}}">
-                        {{ __('Атрибуты') }}
+                        {{ __('entities.attribute.plural') }}
                     </x-navigation.secondary-item>
                     <x-navigation.secondary-item href="{{route('tag.index')}}">
-                        {{ __('Теги') }}
+                        {{ __('entities.tag.plural') }}
+                    </x-navigation.secondary-item>
+                    <x-navigation.secondary-item href="{{route('relation-type.index')}}">
+                        {{ __('entities.relation-types.plural') }}
                     </x-navigation.secondary-item>
                 </ul>
                 <div class="w-full py-1">

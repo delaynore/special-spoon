@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Concept;
+use App\Models\ConceptRelation;
 use App\Models\Dictionary;
+use App\Models\RelationType;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
@@ -68,7 +72,49 @@ class ConceptController extends Controller
         $concept = Concept::findOrFail($concept);
         $dictionary = Dictionary::findOrFail($dictionary);
         $concepts = $dictionary->rootConcepts();
-        return view('concept.show', compact('concept', 'dictionary', 'concepts'));
+
+        $query = ConceptRelation::where('fk_concept_1_id', $concept->id)->orWhere('fk_concept_2_id', $concept->id);
+        $conceptRelationTypes = $query->distinct('fk_relation_type_id')->get('fk_relation_type_id')->pluck('fk_relation_type_id')->reverse();
+
+        $conceptRelations = [];
+
+        foreach ($conceptRelationTypes as $conceptRelationType) {
+
+            $relatedConcepts1 = DB::table('concept_relations')
+            ->join('concepts as concept_1', 'concept_relations.fk_concept_1_id', '=', 'concept_1.id')
+            ->join('concepts as concept_2', 'concept_relations.fk_concept_2_id', '=', 'concept_2.id')
+            ->join('relation_types', 'concept_relations.fk_relation_type_id', '=', 'relation_types.id')
+            ->select(
+                'concept_relations.id as relation_id',
+                'concept_2.id AS concept_id',
+                'concept_2.name AS concept_name'
+            )
+            ->where('concept_1.id', '=', $concept->id)
+            ->where('concept_relations.fk_relation_type_id', '=', $conceptRelationType)
+            ->get();
+
+            $relatedConcepts2 = DB::table('concept_relations')
+            ->join('concepts as concept_1', 'concept_relations.fk_concept_1_id', '=', 'concept_1.id')
+            ->join('concepts as concept_2', 'concept_relations.fk_concept_2_id', '=', 'concept_2.id')
+            ->join('relation_types', 'concept_relations.fk_relation_type_id', '=', 'relation_types.id')
+            ->select(
+                'concept_relations.id as relation_id',
+                'concept_1.id AS concept_id',
+                'concept_1.name AS concept_name'
+            )
+            ->where('concept_2.id', '=', $concept->id)
+            ->where('concept_relations.fk_relation_type_id', '=', $conceptRelationType)
+            ->get();
+
+
+            $merged = array_merge($relatedConcepts1->toArray(), $relatedConcepts2->toArray());
+            array_push($conceptRelations, [
+                RelationType::find($conceptRelationType),
+                $merged
+            ]);
+        }
+
+        return view('concept.show', compact('concept', 'dictionary', 'concepts', 'conceptRelations'));
     }
 
     /**
@@ -143,7 +189,8 @@ class ConceptController extends Controller
         return view('concept.examples', compact('dictionary', 'concept', 'concepts'));
     }
 
-    public function attachments(string $dictionary, string $concept){
+    public function attachments(string $dictionary, string $concept)
+    {
         $concepts = Dictionary::findOrFail($dictionary)->rootConcepts();
         $concept = Concept::findOrFail($concept);
         $dictionary = Dictionary::findOrFail($dictionary);
