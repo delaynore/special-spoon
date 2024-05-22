@@ -72,6 +72,7 @@ Route::middleware(['auth'])->group(function () {
                 'destroy' => 'concept.attribute.destroy',
             ]);
             Route::get('concept/{concept}/relation/create', [ConceptRelationController::class, 'create'])->name('concept.relation.create');
+            Route::get('concept/{concept}/relation/{relation}', [ConceptRelationController::class, 'edit'])->name('concept.relation.edit');
             Route::post('concept/{concept}/relation', [ConceptRelationController::class, 'store'])->name('concept.relation.store');
             Route::delete('concept/{concept}/relation/{relation}', [ConceptRelationController::class, 'destroy'])->name('concept.relation.destroy');
             Route::put('concept/{concept}/relation/{relation}', [ConceptRelationController::class, 'update'])->name('concept.relation.update');

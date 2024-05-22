@@ -1,7 +1,7 @@
 @props(['relationTypes'])
 
 @php
-$names = ['name', 'description'];
+$names = ['name', 'name_plural', 'description'];
 @endphp
 
 <x-layout.main>

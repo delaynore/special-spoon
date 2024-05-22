@@ -10,11 +10,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property string $id
- * @property string $fkConcept1Id
- * @property string $fkConcept2Id
- * @property string $fkRelationTypeId
- * @property Carbon $createdAt
- * @property Carbon $updatedAt
+ * @property string $fk_concept_1_id
+ * @property string $fk_concept_2_id
+ * @property string $fk_relation_type_id
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
  */
 class ConceptRelation extends Model
 {

@@ -43,9 +43,14 @@ class RelationTypeController extends Controller
         Gate::authorize('redactor');
 
         $validated = $this->validate($request, [
-            'name' => 'required|string|unique:relation_types,name',
+            'name' => 'required|string|unique:relation_types,name|unique:relation_types,name_plural',
             'description' => 'nullable|string',
+            'name_plural' => 'nullable|string|unique:relation_types,name|unique:relation_types,name_plural'
         ]);
+
+        if($validated['name_plural'] == null) {
+            $validated['name_plural'] = $validated['name'];
+        }
 
         RelationType::create($validated);
 
@@ -82,8 +87,9 @@ class RelationTypeController extends Controller
     {
         Gate::authorize('redactor');
         $validated = $this->validate($request, [
-            'name' => 'required|string|unique:relation_types,name,' . $relationType,
+            'name' => 'required|string|unique:relation_types,name,' . $relationType.'|unique:relation_types,name_plural,'. $relationType,
             'description' => 'nullable|string',
+            'name_plural' => 'nullable|string|unique:relation_types,name_plural,'. $relationType.'|unique:relation_types,name,' . $relationType
         ]);
 
         RelationType::findOrFail($relationType)->update($validated);

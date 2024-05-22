@@ -30,7 +30,16 @@ return [
         'plural' => 'Типы отношений',
         'props' => [
             'name' => 'Название',
+            'plural' => 'Название во мн.ч.',
             'description' => 'Описание',
         ],
     ],
+    'relation' => [
+        'singular' => 'Отношение',
+        'plural' => 'Отношения',
+    ],
+    'concept' => [
+        'singular' => 'Понятие',
+        'plural' => 'Понятия',
+    ]
 ];

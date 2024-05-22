@@ -4,7 +4,7 @@
 <x-layout.main>
     <x-slot:title>{{ $dictionary->name }}</x-slot:title>
     <x-slot name="navigation"></x-slot>
-    <div class="flex flex-row flex-grow mt-2">
+    <div class="flex flex-row flex-grow">
         @include('components.dashboard.sidebar.sidebar')
         <section class="flex-grow w-3/4 px-4">
             {{ $slot }}

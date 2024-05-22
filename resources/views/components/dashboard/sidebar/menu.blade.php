@@ -8,7 +8,7 @@
         {{__('dashboard.sidebar.menu.create')}}
         <div class="tooltip-arrow" data-popper-arrow></div>
     </div>
-    <a href="{{ route('dictionary.export', $dictionary) }}" data-tooltip-placement="bottom" data-tooltip-target="tooltip-export-concepts" title="{{ __('dashboard.sidebar.menu.export') }}" class="py-2 font-medium text-gray-600 transition-colors duration-200 hover:text-blue-600 dark:hover:text-blue-500 sm:px-6 dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
+    <a href="{{ route('dictionary.export', $dictionary) }}" data-tooltip-placement="bottom" data-tooltip-target="tooltip-export-concepts" title="{{ __('dashboard.sidebar.menu.export') }}" class="px-4 py-2 font-medium text-gray-600 transition-colors duration-200 hover:text-blue-600 dark:hover:text-blue-500 sm:px-6 dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
         <svg class="w-5 h-5 sm:w-6 sm:h-6" data-slot="icon" aria-hidden="true" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 9.75v6.75m0 0-3-3m3 3 3-3m-8.25 6a4.5 4.5 0 0 1-1.41-8.775 5.25 5.25 0 0 1 10.233-2.33 3 3 0 0 1 3.758 3.848A3.752 3.752 0 0 1 18 19.5H6.75Z" stroke-linecap="round" stroke-linejoin="round"></path>
         </svg>

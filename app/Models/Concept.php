@@ -69,6 +69,16 @@ class Concept extends Model
         return $this->hasMany(ConceptAttribute::class, 'fk_concept_id');
     }
 
+    public function relatedConcepts1(): BelongsToMany
+    {
+        return $this->belongsToMany(Concept::class, 'concept_relations', 'fk_concept_1_id', 'fk_concept_2_id');
+    }
+
+    public function relatedConcepts2(): BelongsToMany
+    {
+        return $this->belongsToMany(Concept::class, 'concept_relations', 'fk_concept_2_id', 'fk_concept_1_id');
+    }
+
     protected $fillable = [
         'name',
         'definition',
