@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Enums\DataType;
 use App\Models\Attribute;
-use App\Http\Requests\StoreAttributeRequest;
-use App\Http\Requests\UpdateAttributeRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
@@ -53,7 +51,7 @@ class AttributeController extends Controller
 
         $attribute->save();
 
-        return redirect('/attributes')->with('attribute.create.success', "{$attribute->name} создан.");
+        return redirect('/attributes')->with('success', __('attribute-page.messages.created', ['name' => $attribute->name]));
     }
 
 
@@ -79,7 +77,7 @@ class AttributeController extends Controller
         ]);
 
         $attribute->updateOrFail($validated);
-        return redirect('/attributes')->with('attribute.update.success', "Атрибут - '{$attribute->name}' обновлен.");
+        return redirect('/attributes')->with('success', __('attribute-page.messages.updated', ['name' => $attribute->name]));
     }
 
     /**
@@ -90,10 +88,10 @@ class AttributeController extends Controller
         Gate::authorize('admin');
 
         if ($attribute->concepts()->count() > 0) {
-            return redirect()->back()->with('attribute.delete.error', 'Атрибут не может быть удален, так как он используется в словарях. Удалите его из словарей');
+            return redirect()->back()->with('error', __('attribute-page.messages.delete-error', ['name' => $attribute->name]));
         }
         // Нужно проверить когда добавлю функционал добавления атрибутов.
         $attribute->delete();
-        return redirect('/attributes')->with('attribute.delete.success', "{$attribute->name} удален.");
+        return redirect('/attributes')->with('success', __('attribute-page.messages.deleted', ['name' => $attribute->name]));
     }
 }

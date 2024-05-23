@@ -22,36 +22,6 @@
                             </div>
                         </form>
                     </div>
-                    <div class="flex flex-col items-stretch justify-end flex-shrink-0 w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
-                        <button id="filterDropdownButton" data-dropdown-toggle="filterDropdown" class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg md:w-auto focus:outline-none hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" type="button">
-                            <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="w-4 h-4 mr-2 text-gray-400" viewbox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clip-rule="evenodd" />
-                            </svg>
-                            {{ __('shared.filter') }}
-                            <svg class="-mr-1 ml-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                <path clip-rule="evenodd" fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
-                            </svg>
-                        </button>
-                        <div id="filterDropdown" class="z-10 hidden w-48 p-3 bg-white rounded-lg shadow dark:bg-gray-700">
-                            <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">
-                                {{ __('home-page.filter.type') }}
-                            </h6>
-                            <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">
-                                <li class="flex items-center">
-                                    <input id="private" type="checkbox" value="private" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                    <label for="private" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
-                                        {{ __('home-page.visibility.private') }}
-                                    </label>
-                                </li>
-                                <li class="flex items-center">
-                                    <input id="public" type="checkbox" value="public" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                    <label for="public" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
-                                        {{ __('home-page.visibility.public') }}
-                                    </label>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
                 </div>
                 <div class="overflow-x-auto">
                     @empty($dictionaries)
@@ -90,33 +60,33 @@
 
                         <div id="{{$dictionary->id}}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
                             <ul class="text-sm text-gray-700 dark:text-gray-200" aria-labelledby="{{$dictionary->id}}-button">
-                                @if (Auth::check())
+                                @auth
                                 <li>
-                                    <a href="{{route('dictionary.show', $dictionary->id)}}" class="flex items-center justify-between w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+                                    <a href="{{route('dictionary.show', $dictionary->id)}}" class="flex items-center justify-between w-full px-4 py-2 text-sm text-gray-700 group hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
                                         {{ __('shared.submit.open')}}
-                                        <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                            <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
-                                            <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                        <svg class="w-4 h-4" data-slot="icon" aria-hidden="true" fill="none" stroke-width="2" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" stroke-linecap="round" stroke-linejoin="round"></path>
+                                            <path class="text-transparent transition-all delay-200 group-hover:text-inherit" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" stroke-linecap="round" stroke-linejoin="round"></path>
                                         </svg>
                                     </a>
                                 </li>
-                                @if (Auth::user()->id === $dictionary->user->id)
+                                @can('must-be-owner', $dictionary)
                                 <li>
-                                    <a href="{{ route('dictionary.edit', $dictionary->id) }}" class="flex items-center justify-between px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{__('shared.edit')}}
-                                        <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z" />
+                                    <a href="{{ route('dictionary.edit', $dictionary->id) }}" class="flex items-center justify-between px-4 py-2 group hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{__('shared.edit')}}
+                                        <svg class="w-4 h-4 text-gray-800 dark:text-white group-hover:animate-pulse" data-slot="icon" aria-hidden="true" fill="none" stroke-width="2" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" stroke-linecap="round" stroke-linejoin="round"></path>
                                         </svg>
                                     </a>
                                 </li>
                                 @endif
-                                @endif
+                                @endauth
                             </ul>
                             <div class="py-1">
                                 <input id="link-dictionary{{$dictionary->id}}" type="text" class="hidden link-dictionary" value="{{route('dictionary.show', $dictionary->id)}}" disabled readonly>
-                                <div data-copy-to-clipboard-target="link-dictionary{{$dictionary->id}}" class="flex items-center justify-between w-full px-4 py-2 text-gray-700 cursor-pointer select-none btn-dictionary hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white active:scale-95">
+                                <div data-copy-to-clipboard-target="link-dictionary{{$dictionary->id}}" class="flex items-center justify-between w-full px-4 py-2 text-sm text-gray-700 cursor-pointer select-none group btn-dictionary hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white active:scale-95">
                                     {{ __('shared.link') }}
-                                    <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.213 9.787a3.391 3.391 0 0 0-4.795 0l-3.425 3.426a3.39 3.39 0 0 0 4.795 4.794l.321-.304m-.321-4.49a3.39 3.39 0 0 0 4.795 0l3.424-3.426a3.39 3.39 0 0 0-4.794-4.795l-1.028.961" />
+                                    <svg class="w-4 h-4 text-gray-800 dark:text-white group-hover:animate-pulse" data-slot="icon" aria-hidden="true" fill="none" stroke-width="2" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" stroke-linecap="round" stroke-linejoin="round"></path>
                                     </svg>
                                 </div>
                             </div>
@@ -125,9 +95,7 @@
                         <div class="mb-2">
                             {{$dictionaries->links()}}
                         </div>
-
                     </div>
-
                 </div>
             </div>
         </div>

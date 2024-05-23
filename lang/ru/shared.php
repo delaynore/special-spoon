@@ -27,4 +27,6 @@ return [
     'open' => 'Открыть',
     'number' => 'No',
     'remove' => 'Убрать',
+    'insert' => 'Вставить',
+    'settings' => 'Настройки',
 ];

@@ -1,9 +1,9 @@
 <ul class="flex flex-col items-center p-4 mt-4 font-medium border border-gray-100 rounded-lg md:p-0 bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 dark:border-gray-700">
     <x-navigation.primary-item href="{{route('home')}}" class="py-2.5">
-        {{ __('Главная') }}
+        {{ __('navigation.home') }}
     </x-navigation.primary-item>
     <x-navigation.primary-item href="{{route('my')}}" class="py-2.5">
-        {{ __('Мои словари') }}
+        {{ __('navigation.my-dictionaries') }}
     </x-navigation.primary-item>
 
 
@@ -17,7 +17,7 @@
             <div id="dropdownNavbar" class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownLargeButton">
                     <x-navigation.secondary-item href="{{route('profile.edit')}}">
-                        {{ __('Настройки') }}
+                        {{ __('shared.settings') }}
                     </x-navigation.secondary-item>
                     <x-navigation.secondary-item href="{{route('attribute.index')}}">
                         {{ __('entities.attribute.plural') }}
@@ -40,7 +40,7 @@
     @endauth
 
     @guest
-        <x-navigation.primary-item href="{{ route('login') }}" :sign="true">{{ __('Войти') }}</x-navigation.primary-item>
+        <x-navigation.primary-item href="{{ route('login') }}" :sign="true">{{ __('auth.login.button-login') }}</x-navigation.primary-item>
     @endguest
 
     <x-theme-toggle></x-theme-toggle>

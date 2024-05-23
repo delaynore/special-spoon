@@ -8,13 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\DB;
 
 /**
  * @property string $id
  * @property string $name
  * @property string $definition
+ * @property Dictionary $dictionary
  * @property string $fk_dictionary_id
  * @property string $fk_parent_concept_id
  */

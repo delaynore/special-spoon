@@ -5,22 +5,10 @@ namespace App\Http\Controllers;
 use App\Enums\DataType;
 use App\Models\Concept;
 use App\Models\ConceptAttributeValue;
-use App\Http\Requests\StoreConceptAttributeValueRequest;
-use App\Http\Requests\UpdateConceptAttributeValueRequest;
-use App\Models\ConceptAttribute;
-use Attribute;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class ConceptAttributeValueController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -47,6 +35,9 @@ class ConceptAttributeValueController extends Controller
      */
     public function store(Request $request, Concept $concept)
     {
+        $validated = $request->validate([
+            '*' => 'required',
+        ]);
         $conceptAttr = $concept->attributes()->get();
 
         $exampleNumber = (Concept::where('concepts.id', $concept->id)
@@ -73,14 +64,6 @@ class ConceptAttributeValueController extends Controller
             $conceptAttributeValue->saveOrFail();
         }
         return redirect()->back();
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(ConceptAttributeValue $conceptAttributeValue)
-    {
-        //
     }
 
     /**

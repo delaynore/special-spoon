@@ -3,16 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Enums\Visibility;
-use App\Models\Concept;
 use App\Models\Dictionary;
 use App\Models\Tag;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -73,9 +69,11 @@ class DictionaryController extends Controller
             'fk_user_id' => $request->user()->id,
         ]);
         $dictionary->save();
-        foreach ($validated['tags'] as $tag) {
-            $tagModel = Tag::find($tag);
-            $dictionary->tags()->attach($tagModel->id, ['id' => Str::uuid()]);
+        if(!empty($validated['tags'])) {
+            foreach ($validated['tags'] as $tag) {
+                $tagModel = Tag::find($tag);
+                $dictionary->tags()->attach($tagModel->id, ['id' => Str::uuid()]);
+            }
         }
 
 
@@ -142,19 +140,16 @@ class DictionaryController extends Controller
         $dictionary->visibility = $validated['visibility'];
 
         $newTags = $validated['tags'];
-        Log::info('New tags: ' . json_encode($newTags));
         // Detach tags that are not present in the new list
         $dictionaryTags = $dictionary->tags()->pluck('tags.id')->toArray();
         foreach ($dictionaryTags as $id) {
             if (!in_array($id, $validated['tags'])) {
-                Log::info('Detaching tag: ' . $id);
                 $dictionary->tags()->detach($id);
             }
         }
         // Attach tags that are present in the new list but not in the existing dictionary
         foreach ($validated['tags'] as $tagId) {
             if (!in_array($tagId, $dictionaryTags)) {
-                Log::info('Attaching tag: ' . $tagId);
                 $dictionary->tags()->attach($tagId, ['id' => Str::uuid()]);
             }
         }
