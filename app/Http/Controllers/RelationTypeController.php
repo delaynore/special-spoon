@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\RelationType;
-use App\Http\Requests\StoreRelationTypeRequest;
-use App\Http\Requests\UpdateRelationTypeRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -59,14 +57,6 @@ class RelationTypeController extends Controller
                 'success',
                 __('relation-type-page.messages.created')
             );
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(RelationType $relationType)
-    {
-        //
     }
 
     /**

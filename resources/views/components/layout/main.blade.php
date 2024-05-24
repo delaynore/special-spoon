@@ -37,15 +37,6 @@
         @include('components.navigation.navbar')
         @endif
 
-        <!-- Page Heading
-        @if (isset($header))
-        <header class="bg-white shadow dark:bg-gray-800">
-            <div class="flex flex-col items-center px-4 py-6 mx-auto md:flex-row md:justify-between max-w-7xl sm:px-6 lg:px-8">
-                {{ $header }}
-            </div>
-        </header>
-        @endif -->
-
         <!-- Page Content -->
         <main class="flex flex-grow w-full">
             @if (isset($slot))
@@ -66,17 +57,8 @@
         @session('error')
         <x-toast type="error" color='red'>{{ $value }}</x-toast>
         @endsession
-        @session('attribute.create.success')
-        <x-toast type="success" color='green'>{{ $value }}</x-toast>
-        @endsession
-        @session('attribute.update.success')
-        <x-toast type="success" color='green'>{{ $value }}</x-toast>
-        @endsession
-        @session('attribute.delete.error')
-        <x-toast type="error" color='red'>{{ $value }}</x-toast>
-        @endsession
-        @session('attribute.delete.success')
-        <x-toast type="success" color='red'>{{ $value }}</x-toast>
+        @session('warning')
+        <x-toast type="error" color='orange'>{{ $value }}</x-toast>
         @endsession
     </div>
 </body>

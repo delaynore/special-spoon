@@ -15,5 +15,11 @@ return [
         'name-input-label' => 'Название атрибута',
         'name-input-placeholder' => 'Название атрибута',
         'type-input-label' => 'Тип атрибута',
+    ],
+    'messages' => [
+        'deleted' => 'Атрибут ":name" был удален',
+        'created' => 'Атрибут ":name" был создан',
+        'updated' => 'Атрибут ":name" был обновлен',
+        'delete-error' => 'Атрибут ":name" не может быть удален, так как он используется.'
     ]
 ];

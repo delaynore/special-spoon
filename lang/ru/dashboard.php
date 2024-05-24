@@ -6,6 +6,15 @@ return [
             'export' => 'Экспорт списка понятий',
             'create' => 'Создать новое понятие'
         ],
+        'concepts' => [
+            'child' => 'Добавить сына',
+            'brother' => 'Добавить брата',
+        ]
+    ],
+    'tabs' => [
+        'concepts' => 'Понятие',
+        'examples' => 'Экземпляры',
+        'attachments' => 'Вложения',
     ],
     'attachments' => [
         'title' => 'Вложения ":concept"',

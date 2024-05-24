@@ -9,7 +9,6 @@ use App\Models\RelationType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 
 class ConceptRelationController extends Controller
 {
@@ -49,14 +48,6 @@ class ConceptRelationController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(ConceptRelation $conceptRelation)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $dictionary, string $concept, string $conceptRelation)
@@ -67,7 +58,7 @@ class ConceptRelationController extends Controller
         $relationTypes = RelationType::all();
         $concepts = $dictionary->concepts()->orderBy('name')->get();
         $conceptRelation = ConceptRelation::findOrFail($conceptRelation);
-
+        $concept = Concept::findOrFail($concept);
         return view('concept-relation.edit', compact('dictionary', 'concept', 'conceptRelation', 'relationTypes', 'concepts'));
     }
 

@@ -10,26 +10,21 @@
             </div>
             <div class="">
                 @can('must-be-owner', $concept->dictionary)
-                <a href="{{route('concept.edit', [$dictionary, $concept])}}" class="text-green-500 hover:text-white border border-green-500 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-green-700 dark:text-green-700 dark:hover:text-white dark:hover:bg-green-800 dark:focus:ring-green-800 transition-all">
+                <a href="{{route('concept.edit', [$dictionary, $concept])}}" class="px-3 py-2 text-sm font-medium text-center text-green-500 transition-all border border-green-500 rounded-lg hover:text-white hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 dark:border-green-700 dark:text-green-700 dark:hover:text-white dark:hover:bg-green-800 dark:focus:ring-green-800">
                     {{__('shared.edit')}}
                 </a>
                 @endcan
             </div>
         </div>
-
         <div class="block w-full min-h-12 text-sm p-2.5 text-gray-900 bg-gray-50 rounded-lg border border-gray-300  dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
             {!! $concept->definition !!}
         </div>
-
         <div class="w-[calc(100%+2*1.65rem)] -ml-[1.65rem] border-b border-gray-300 dark:border-gray-500 mt-3">
         </div>
-
-
         <div class="flex items-center justify-between mt-4">
             <p class="text-2xl text-gray-900 break-words dark:text-gray-500 text-wrap">Отношения</p>
-
             @can('must-be-owner', $concept->dictionary)
-            <a href="{{route('concept.relation.create', [$dictionary, $concept])}}" class="text-blue-500 hover:text-white border border-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-blue-700 dark:text-blue-700 dark:hover:text-white dark:hover:bg-blue-800 dark:focus:ring-blue-800 transition-all">
+            <a href="{{route('concept.relation.create', [$dictionary, $concept])}}" class="px-3 py-2 text-sm font-medium text-center text-blue-500 transition-all border border-blue-500 rounded-lg hover:text-white hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:border-blue-700 dark:text-blue-700 dark:hover:text-white dark:hover:bg-blue-800 dark:focus:ring-blue-800">
                 {{__('shared.add')}}
             </a>
             @endcan
@@ -39,7 +34,9 @@
             <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-tab" data-tabs-toggle="#default-tab-content" role="tablist">
                 @foreach ($conceptRelations as $k => $conceptRelation)
                 <li class="me-2" role="presentation">
-                    <button class="inline-block p-4 border-b-2 rounded-t-lg" id="tab{{$k}}" data-tabs-target="#tab-content{{$k}}" role="tab" type="button" role="tab" aria-controls="{{$k}}" aria-selected="false">{{$conceptRelation[0]->name_plural ?? $conceptRelation[0]->name}}</button>
+                    <button class="inline-block p-4 border-b-2 rounded-t-lg" id="tab{{$k}}" data-tabs-target="#tab-content{{$k}}" role="tab" type="button" role="tab" aria-controls="{{$k}}" aria-selected="false">
+                        {{$conceptRelation[0]->name_plural ?? $conceptRelation[0]->name}}
+                    </button>
                 </li>
                 @endforeach
             </ul>
@@ -53,9 +50,6 @@
                     {{ __('shared.empty-records') }}
                 </div>
                 @else
-
-
-
                 <div class="relative overflow-x-auto">
                     <table class="w-full text-sm text-gray-500 rtl:text-right dark:text-gray-400">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -74,7 +68,6 @@
                                 <th class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-gray-200">
                                     <a href="{{route('concept.show', [$dictionary, $relatedConcept->concept_id])}}" class="hover:underline">{{$relatedConcept->concept_name}}</a>
                                 </th>
-
                                 <td class="flex items-center justify-end gap-4 px-6 py-4 ">
                                     @can('must-be-owner', $concept->dictionary)
                                     <a href="{{route('concept.relation.edit',  [$dictionary, $concept, 'relation' => $relatedConcept->relation_id])}}" class="font-medium text-green-600 dark:text-green-500 hover:underline">{{ __('shared.edit')}}</a>
@@ -85,7 +78,6 @@
                                             {{ __('shared.delete')}}
                                         </button>
                                     </div>
-                                    <!--  -->
                                     <div id="delete-entity-{{$relatedConcept->relation_id}}" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 items-center justify-center hidden w-full overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
                                         <div class="relative w-full h-full max-w-md p-4 md:h-auto">
                                             <div class="relative p-4 text-center bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
@@ -114,20 +106,15 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!--  -->
                                     @endcan
                                 </td>
-
                             </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
-
-
                 @endif
             </div>
             @endforeach
-
         </div>
 </x-layout.dashboard>

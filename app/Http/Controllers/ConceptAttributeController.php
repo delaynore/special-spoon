@@ -4,12 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Concept;
 use App\Models\ConceptAttribute;
-use App\Http\Requests\StoreConceptAttributeRequest;
 use App\Http\Requests\UpdateConceptAttributeRequest;
 use App\Models\ConceptAttributeValue;
 use App\Models\Dictionary;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class ConceptAttributeController extends Controller
 {
@@ -66,30 +64,6 @@ class ConceptAttributeController extends Controller
         }
 
         return redirect()->back();
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(ConceptAttribute $conceptAttribute)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(ConceptAttribute $conceptAttribute)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateConceptAttributeRequest $request, ConceptAttribute $conceptAttribute)
-    {
-        //
     }
 
     /**
