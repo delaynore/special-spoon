@@ -96,13 +96,11 @@ Route::middleware(['auth'])->group(function () {
 
     Route::delete('concept/{concept}/examples/{exampleNumber}', [ConceptAttributeValueController::class, 'destroy'])->name('concept.example.destroy');
     Route::get('concept/{concept}/examples/{exampleNumber}', [ConceptAttributeValueController::class, 'edit'])->name('concept.example.edit');
-    Route::put('concept/{concept}/examples/{exampleNumber}', [ConceptAttributeValueController::class, 'edit'])->name('concept.example.update');
+    Route::put('concept/{concept}/examples/{exampleNumber}', [ConceptAttributeValueController::class, 'update'])->name('concept.example.update');
 
     Route::resource('concept/{concept}/example', ConceptAttributeValueController::class)->only(['store', 'update', 'create'])->names([
         'create' => 'concept.example.create',
         'store' => 'concept.example.store',
-        'update' => 'concept.example.update',
-        'edit' => 'concept.example.edit',
     ]);
 
     Route::resource('tags', TagController::class)->names([
