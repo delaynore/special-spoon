@@ -42,7 +42,6 @@ Route::middleware(['auth'])->group(function () {
             'edit' => 'dictionary.edit',
             'destroy' => 'dictionary.destroy',
             'update' => 'dictionary.update',
-            'show' => 'dictionary.show',
         ]);
 
         Route::get('my/{dictionary}/dashboard', [DictionaryController::class, 'show'])->name('dictionary.show');
