@@ -7,6 +7,7 @@ use App\Http\Controllers\ConceptAttributeValueController;
 use App\Http\Controllers\ConceptController;
 use App\Http\Controllers\ConceptRelationController;
 use App\Http\Controllers\DictionaryController;
+use App\Http\Controllers\ImportExamplesController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RelationTypeController;
 use App\Http\Controllers\TagController;
@@ -52,6 +53,11 @@ Route::middleware(['auth'])->group(function () {
                 'store' => 'concept.store',
                 'destroy' => 'concept.destroy',
             ]);
+
+            // import
+            Route::get('concept/{concept}/import', [ImportExamplesController::class, 'create'])->name('import.create');
+            Route::post('concept/{concept}/import', [ImportExamplesController::class, 'store'])->name('import.store');
+
             Route::put('concept/{concept}', [ConceptController::class, 'update'])->name('concept.update');
             Route::get('concept/{concept}', [ConceptController::class, 'edit'])->name('concept.edit');
             Route::get('dashboard/{concept}', [ConceptController::class, 'show'])->name('concept.show');

@@ -4,7 +4,7 @@ $attributes = $attributes = \App\Models\Attribute::join('concept_attributes', 'a
 ->selectRaw('attributes.id, attributes.name, attributes.type')
 ->orderBy('concept_attributes.created_at')
 ->get();
-$conceptAttr = \App\Models\ConceptAttribute::where('fk_concept_id', $concept->id)->get();
+$conceptAttr = \App\Models\ConceptAttribute::where('fk_concept_id', $concept->id)->orderBy('created_at')->get();
 @endphp
 
 <div class="flex justify-end my-2">

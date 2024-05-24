@@ -35,6 +35,7 @@ $dictionary = $concept->dictionary()->first();
     <a href="{{route('concept.example.create', $concept) }}" class="px-3 py-2 text-sm font-medium text-center text-blue-500 transition-all border border-blue-500 rounded-lg hover:text-white hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:border-blue-700 dark:text-blue-700 dark:hover:text-white dark:hover:bg-blue-800 dark:focus:ring-blue-800">
         {{__('shared.add')}}
     </a>
+    <a href="{{route('import.create', [$dictionary, $concept])}}" class="px-3 py-2 ml-2 text-sm font-medium text-center transition-all border rounded-lg border-cyan-500 text-cyan-500 hover:text-white hover:bg-cyan-600 focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:border-cyan-700 dark:text-cyan-700 dark:hover:text-white dark:hover:bg-cyan-800 dark:focus:ring-cyan-800">{{__('shared.import')}}</a>
     @endcan
 </div>
 <div class="overflow-x-auto overflow-y-scroll shadow-md sm:rounded-lg">
