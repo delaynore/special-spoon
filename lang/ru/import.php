@@ -11,6 +11,7 @@ return [
         'invalid-amount-columns' => 'Неверное количество столбцов в строке :line. Ожидалось :expected столбцов, получено :actual.',
         'empty-column' => 'Столбец :column в строке :line пустой',
         'invalid-column-type' => '"Неверный тип данных в строке :line, столбце :column',
+        'no-valid-rows' => 'В файле не найдены экземпляры',
         'success' => 'Экземпляры в количестве :count успешно импортированы',
     ],
     'available-file-types' => 'TXT, CSV. Максимум 3 МБ.',

@@ -8,6 +8,7 @@ use App\Models\ConceptAttribute;
 use App\Models\ConceptAttributeValue;
 use App\Models\Dictionary;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rules\File;
 
@@ -88,7 +89,7 @@ class ImportExamplesController extends Controller
             }
             $allExamples[$currentLine] = [];
             foreach ($words as $k => $word) {
-                if ($word == '') {
+                if ($word === '') {
                     return redirect()->back()->with(
                         "error",
                         __(
@@ -117,11 +118,18 @@ class ImportExamplesController extends Controller
             $currentExampleNumber++;
             $currentLine++;
         }
-        foreach ($allExamples as $example) {
-            foreach ($example as $value) {
-                $value->save();
-            }
+
+        if (count($allExamples) === 0) {
+            return redirect()->back()->with('error', __('import.messsages.no-valid-rows'));
         }
+
+        DB::transaction(function () use ($allExamples) {
+            foreach ($allExamples as $example) {
+                foreach ($example as $value) {
+                    $value->save();
+                }
+            }
+        });
 
         return redirect()->back()->with("success", __('import.messsages.success', ['count' => count($allExamples)]));
     }
