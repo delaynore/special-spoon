@@ -29,7 +29,7 @@ class AttachmentController extends Controller
         Gate::authorize('must-be-owner', $dictionary);
 
         $validated = $request->validate([
-            'name' => 'sometimes|required|alpha_num|max:255',
+            'name' => 'sometimes|required|alpha_num|max:255|unique:attachments,name',
             'file' => 'required|mimes:png,jpg,jpeg,mp3,mp4|max:10240',
         ]);
 
