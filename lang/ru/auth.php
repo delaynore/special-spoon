@@ -56,9 +56,6 @@ return [
         'have-account' => 'Уже есть аккаунт?',
         'to-login' => 'Войти',
         'button-register' => 'Зарегистрироваться',
-        'accept-terms' => 'Я принимаю',
-        'accept-terms-link' => 'Пользовательское соглашение',
-
         'name' => [
             'label' => 'Имя',
             'placeholder' => 'Ваше прекрасное имя',
