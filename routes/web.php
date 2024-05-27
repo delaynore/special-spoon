@@ -14,9 +14,6 @@ use App\Http\Controllers\TagController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::view('contact', 'components.pages.contact')->name('contact');
-Route::view('about', 'components.pages.about')->name('about');
-
 Route::redirect('/home', '/');
 
 Route::get('/', function (Request $request) {

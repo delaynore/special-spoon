@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Attachment;
 use App\Enums\AttachmentType;
-use App\Http\Requests\StoreAttachmentRequest;
-use App\Http\Requests\UpdateAttachmentRequest;
 use App\Models\Concept;
 use App\Models\Dictionary;
 use Illuminate\Http\Request;
@@ -68,30 +66,6 @@ class AttachmentController extends Controller
                 'success',
                 __('shared.entity.created', ['entity' => Str::lower(__('entities.attachment.singular'))])
             );
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Attachment $attachment)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Attachment $attachment)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateAttachmentRequest $request, Attachment $attachment)
-    {
-        //
     }
 
     /**
