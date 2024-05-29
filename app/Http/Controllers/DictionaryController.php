@@ -69,7 +69,7 @@ class DictionaryController extends Controller
             'fk_user_id' => $request->user()->id,
         ]);
         $dictionary->save();
-        if(!empty($validated['tags'])) {
+        if (!empty($validated['tags'])) {
             foreach ($validated['tags'] as $tag) {
                 $tagModel = Tag::find($tag);
                 $dictionary->tags()->attach($tagModel->id, ['id' => Str::uuid()]);
@@ -114,7 +114,7 @@ class DictionaryController extends Controller
 
         return view(
             'dictionary.edit',
-           compact('dictionary')
+            compact('dictionary')
         );
     }
 
@@ -139,18 +139,17 @@ class DictionaryController extends Controller
         $dictionary->description = $validated['description'];
         $dictionary->visibility = $validated['visibility'];
 
-        $newTags = $validated['tags'];
-        // Detach tags that are not present in the new list
-        $dictionaryTags = $dictionary->tags()->pluck('tags.id')->toArray();
-        foreach ($dictionaryTags as $id) {
-            if (!in_array($id, $validated['tags'])) {
-                $dictionary->tags()->detach($id);
+        if (!empty($validated['tags'])) {
+            $dictionaryTags = $dictionary->tags()->pluck('tags.id')->toArray();
+            foreach ($dictionaryTags as $id) {
+                if (!in_array($id, $validated['tags'])) {
+                    $dictionary->tags()->detach($id);
+                }
             }
-        }
-        // Attach tags that are present in the new list but not in the existing dictionary
-        foreach ($validated['tags'] as $tagId) {
-            if (!in_array($tagId, $dictionaryTags)) {
-                $dictionary->tags()->attach($tagId, ['id' => Str::uuid()]);
+            foreach ($validated['tags'] as $tagId) {
+                if (!in_array($tagId, $dictionaryTags)) {
+                    $dictionary->tags()->attach($tagId, ['id' => Str::uuid()]);
+                }
             }
         }
 
