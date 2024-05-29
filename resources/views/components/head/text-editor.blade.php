@@ -86,7 +86,7 @@
             </div>
         </div>
         <textarea name="{{$name}}" id="textarea" class="hidden">{{$value}}</textarea>
-        <div contenteditable id="{{$id}}" class="{{$textareaClass}} w-full max-w-xl whitespace-pre-wrap overflow-y-auto leading-relaxed break-words">{!! $value !!}</div>
+        <div contenteditable id="{{$id}}" onchange="onChange" class="{{$textareaClass}} w-full max-w-xl whitespace-pre-wrap overflow-y-auto leading-relaxed break-words">{!! $value !!}</div>
 
         <script>
             const textarea = document.getElementById("textarea");

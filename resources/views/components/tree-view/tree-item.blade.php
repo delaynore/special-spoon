@@ -10,12 +10,12 @@ $active = 'bg-blue-200 dark:bg-sky-800 hover:bg-blue-200 dark:hover:bg-sky-800 t
 @if ($children->count() > 0)
 <h2 id="header-{{$concept->id}} " class="w-full">
     <div data-dropdown-trigger="click" data-dropdown-toggle="dropdown{{$concept->id}}" data-dropdown-placement="right" data-dropdown-offset-skidding="100">
-        <button type="button" class="{{$hover}} flex items-center justify-between w-full px-2 py-1 font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800" data-accordion-target="#body-{{$concept->id}}" aria-expanded="false" aria-controls="body-{{$concept->id}}">
-            <div class="">
+        <button type="button" class="{{$hover}} flex items-center justify-between w-full px-2 py-1 font-medium text-gray-700 dark:text-gray-200  dark:hover:bg-gray-800" data-accordion-target="#body-{{$concept->id}}" aria-expanded="false" aria-controls="body-{{$concept->id}}">
+            <div class="inline-flex items-start text-left">
                 @if ($concept->fk_parent_concept_id)
                 <span class="text-gray-400 -ml-[10px] mr-1">-</span>
                 @endif
-                <span class="overflow-hidden select-text text-ellipsis">{{$concept->name}}</span>
+                <span class="overflow-hidden text-gray-700 select-text dark:text-gray-200">{{$concept->name}}</span>
             </div>
             <x-tree-view.icon />
         </button>
@@ -24,7 +24,7 @@ $active = 'bg-blue-200 dark:bg-sky-800 hover:bg-blue-200 dark:hover:bg-sky-800 t
 <div id="body-{{$concept->id}}" class="hidden" aria-labelledby="header-{{$concept->id}}">
     <div class="border-l-2 border-gray-400 select-text ms-1">
         <!-- Nested accordion -->
-        <div id="{{$unique}}" data-accordion="open" data-inactive-classes="text-inherit" data-active-classes="{{$active}}">
+        <div id="{{$unique}}" data-accordion="open" data-inactive-classes="text-gray-700 dark:text-gray-200" data-active-classes="{{$active}} {{$hover}}">
             @each('components.tree-view.tree-item', $children, 'concept')
         </div>
         <!-- End: Nested accordion -->

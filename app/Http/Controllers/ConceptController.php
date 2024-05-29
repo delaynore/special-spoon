@@ -38,8 +38,8 @@ class ConceptController extends Controller
         $dictionary = Dictionary::findOrFail($dictionaryId);
         Gate::authorize('must-be-owner', $dictionary);
         $validated = $request->validate([
-            'name' => ['required', 'max:50', Rule::notIn(Dictionary::find($dictionaryId)->concepts()->pluck('name'))],
-            'definition' => 'max:1000',
+            'name' => ['required', 'max:255', Rule::notIn(Dictionary::find($dictionaryId)->concepts()->pluck('name'))],
+            'definition' => 'max:10000',
             'fk_parent_concept_id' => ['uuid', Rule::in(Dictionary::find($dictionaryId)->concepts()->pluck('id'))],
         ]);
 
@@ -123,10 +123,9 @@ class ConceptController extends Controller
     public function update(Request $request, Dictionary $dictionary, Concept $concept)
     {
         Gate::authorize('must-be-owner', $concept->dictionary);
-
         $validated = $request->validate([
-            'name' => ['required', 'max:50', Rule::notIn($dictionary->concepts->where('id', '!=', $concept->id)->pluck('name'))],
-            'definition' => 'max:1000',
+            'name' => ['required', 'max:255', Rule::notIn($dictionary->concepts->where('id', '!=', $concept->id)->pluck('name'))],
+            'definition' => 'max:10000',
             'parent' => [Rule::excludeIf(empty($request->input('parent'))), 'uuid', Rule::in($dictionary->concepts->pluck('id'))],
         ]);
 
