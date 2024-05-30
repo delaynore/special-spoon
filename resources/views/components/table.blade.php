@@ -1,13 +1,13 @@
 @props([
-    'headers',
-    'rows',
-    'names',
-    'editRouteName',
-    'deleteRouteName',
-    'isPaginated' => true,
-    'entityName',
-    'deleteGateName' => 'admin',
-    'editGateName' => 'redactor',
+'headers',
+'rows',
+'names',
+'editRouteName',
+'deleteRouteName',
+'isPaginated' => true,
+'entityName',
+'deleteGateName' => 'admin',
+'editGateName' => 'redactor',
 ])
 
 <div class="overflow-x-auto overflow-y-scroll shadow-md sm:rounded-lg">

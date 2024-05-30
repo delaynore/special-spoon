@@ -18,11 +18,13 @@ return [
         'attachments' => 'Вложения',
     ],
     'attachments' => [
-        'title' => 'Вложения ":concept"',
-        'header' => 'Вложения ":concept"',
+        'title' => '',
+        'header' => '',
     ],
     'examples' => [
-        'header' => 'Примеры ":concept"',
+        'header' => '',
+        'table' => 'Экземпляры',
+        'attributes' => 'Атрибуты',
     ],
     'relation' => [
         'create' => [

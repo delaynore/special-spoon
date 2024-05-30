@@ -16,6 +16,9 @@ $conceptAttr = \App\Models\ConceptAttribute::where('fk_concept_id', $concept->id
 </div>
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
     <table class="w-full text-sm text-center text-gray-500 dark:text-gray-400">
+        <caption class="px-6 py-2 text-lg font-semibold text-left text-gray-800 bg-white dark:text-gray-200 dark:bg-gray-800">
+            {{__('dashboard.examples.attributes')}}
+        </caption>
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
                 <th scope="col" class="px-2 py-3">
