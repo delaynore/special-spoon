@@ -18,3 +18,8 @@
     -webkit-line-clamp: 3;
     overflow: hidden;
   }
+
+ .active {
+    @apply bg-blue-200 dark:bg-sky-800 hover:!bg-blue-300 bg-opacity-100 dark:hover:!bg-sky-700 text-black dark:text-white  border-blue-500 dark:border-blue-500
+ }
+

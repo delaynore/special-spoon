@@ -1,46 +1,27 @@
 @php
 $dictionary = $concept->dictionary;
 $children = $concept->children()->get();
-$unique = Str::random(5);
-
-$hover = 'hover:bg-gray-200 dark:hover:bg-gray-850';
-$active = 'bg-blue-200 dark:bg-sky-800 hover:bg-blue-200 dark:hover:bg-sky-800 text-black dark:text-white outline outline-1 outline-blue-500 dark:outline-blue-500';
 @endphp
 
-@if ($children->count() > 0)
-<h2 id="header-{{$concept->id}} " class="w-full">
-    <div data-dropdown-trigger="click" data-dropdown-toggle="dropdown{{$concept->id}}" data-dropdown-placement="right" data-dropdown-offset-skidding="100">
-        <button type="button" class="{{$hover}} flex items-center justify-between w-full px-2 py-1 font-medium text-gray-700 dark:text-gray-200  dark:hover:bg-gray-800" data-accordion-target="#body-{{$concept->id}}" aria-expanded="false" aria-controls="body-{{$concept->id}}">
-            <div class="inline-flex items-start text-left">
-                @if ($concept->fk_parent_concept_id)
-                <span class="text-gray-400 -ml-[10px] mr-1">-</span>
-                @endif
-                <span class="overflow-hidden text-gray-700 select-text dark:text-gray-200">{{$concept->name}}</span>
-            </div>
-            <x-tree-view.icon />
-        </button>
-    </div>
-</h2>
-<div id="body-{{$concept->id}}" class="hidden" aria-labelledby="header-{{$concept->id}}">
-    <div class="border-l-2 border-gray-400 select-text ms-1">
-        <!-- Nested accordion -->
-        <div id="{{$unique}}" data-accordion="open" data-inactive-classes="text-gray-700 dark:text-gray-200" data-active-classes="{{$active}} {{$hover}}">
-            @each('components.tree-view.tree-item', $children, 'concept')
+<li data-id="concept-{{$concept->id}}" class="cursor-pointer">
+    <div class="mb-[1px] inline-flex items-center justify-between w-full p-1 transition-transform delay-100 border-r border-gray-100 dark:border-gray-900 hover:bg-gray-200 dark:hover:bg-gray-700 toggle">
+        <div data-open-concept-route="{{route('concept.show',[$dictionary, $concept])}}" class="inline-flex items-start flex-grow text-left open-concept" data-dropdown-trigger="click" data-dropdown-toggle="dropdown{{$concept->id}}" data-dropdown-placement="right" data-dropdown-offset-skidding="100">
+            @if ($concept->fk_parent_concept_id)
+            <span class="text-gray-400 -ml-[5px] mr-1">-</span>
+            @endif
+            <span class="overflow-hidden text-gray-900 select-text dark:text-gray-200">{{$concept->name}}</span>
         </div>
-        <!-- End: Nested accordion -->
-    </div>
-</div>
-@else
-
-<h2 class="w-full">
-    <div data-dropdown-trigger="click" data-dropdown-toggle="dropdown{{$concept->id}}" data-dropdown-placement="right" data-dropdown-offset-skidding="100" class="{{$hover}} justify-start flex items-center w-full px-2 py-1 font-medium text-gray-700  focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800">
-        @if ($concept->fk_parent_concept_id)
-        <span class="text-gray-400 -ml-[10px] mr-1">-</span>
+        @if ($children->count() > 0)
+        <x-tree-view.icon></x-tree-view.icon>
         @endif
-        {{$concept->name}}
     </div>
-</h2>
-@endif
+    @if ($children->count() > 0)
+    <ul class="hidden border-l-2 border-gray-400 select-text ms-1">
+        @each('components.tree-view.tree-item', $children, 'concept')
+    </ul>
+    @endif
+</li>
+
 
 
 <div id="dropdown{{$concept->id}}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
@@ -85,14 +66,6 @@ $active = 'bg-blue-200 dark:bg-sky-800 hover:bg-blue-200 dark:hover:bg-sky-800 t
         </li>
         @endcan
     </ul>
-    <div class="py-1 text-gray-700 dark:text-gray-200">
-        <a href="#" class="flex items-center justify-between px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-            {{ __('shared.link')}}
-            <svg class="w-4 h-4" data-slot="icon" aria-hidden="true" fill="none" stroke-width="2" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" stroke-linecap="round" stroke-linejoin="round"></path>
-            </svg>
-        </a>
-    </div>
     @can('must-be-owner', $dictionary)
     <div class="py-1 text-gray-700 dark:text-gray-200">
         <form action="{{route('concept.destroy', [$dictionary ,$concept->id])}}" method="post">
