@@ -26,8 +26,14 @@ class ConceptController extends Controller
             return view('concept.create', compact('dictionary'));
         }
 
+
         $parent = Concept::findOrFail(request()->get('parentId'));
-        return view('concept.create', compact('dictionary', 'parent'));
+        if (request()->get('brotherId') == null) {
+            return view('concept.create', compact('dictionary', 'parent'));
+        }
+
+        $brother = Concept::findOrFail(request()->get('brotherId'));
+        return view('concept.create', compact('dictionary', 'parent', 'brother'));
     }
 
     /**
@@ -72,30 +78,30 @@ class ConceptController extends Controller
         foreach ($conceptRelationTypes as $conceptRelationType) {
 
             $relatedConcepts1 = DB::table('concept_relations')
-            ->join('concepts as concept_1', 'concept_relations.fk_concept_1_id', '=', 'concept_1.id')
-            ->join('concepts as concept_2', 'concept_relations.fk_concept_2_id', '=', 'concept_2.id')
-            ->join('relation_types', 'concept_relations.fk_relation_type_id', '=', 'relation_types.id')
-            ->select(
-                'concept_relations.id as relation_id',
-                'concept_2.id AS concept_id',
-                'concept_2.name AS concept_name'
-            )
-            ->where('concept_1.id', '=', $concept->id)
-            ->where('concept_relations.fk_relation_type_id', '=', $conceptRelationType)
-            ->get();
+                ->join('concepts as concept_1', 'concept_relations.fk_concept_1_id', '=', 'concept_1.id')
+                ->join('concepts as concept_2', 'concept_relations.fk_concept_2_id', '=', 'concept_2.id')
+                ->join('relation_types', 'concept_relations.fk_relation_type_id', '=', 'relation_types.id')
+                ->select(
+                    'concept_relations.id as relation_id',
+                    'concept_2.id AS concept_id',
+                    'concept_2.name AS concept_name'
+                )
+                ->where('concept_1.id', '=', $concept->id)
+                ->where('concept_relations.fk_relation_type_id', '=', $conceptRelationType)
+                ->get();
 
             $relatedConcepts2 = DB::table('concept_relations')
-            ->join('concepts as concept_1', 'concept_relations.fk_concept_1_id', '=', 'concept_1.id')
-            ->join('concepts as concept_2', 'concept_relations.fk_concept_2_id', '=', 'concept_2.id')
-            ->join('relation_types', 'concept_relations.fk_relation_type_id', '=', 'relation_types.id')
-            ->select(
-                'concept_relations.id as relation_id',
-                'concept_1.id AS concept_id',
-                'concept_1.name AS concept_name'
-            )
-            ->where('concept_2.id', '=', $concept->id)
-            ->where('concept_relations.fk_relation_type_id', '=', $conceptRelationType)
-            ->get();
+                ->join('concepts as concept_1', 'concept_relations.fk_concept_1_id', '=', 'concept_1.id')
+                ->join('concepts as concept_2', 'concept_relations.fk_concept_2_id', '=', 'concept_2.id')
+                ->join('relation_types', 'concept_relations.fk_relation_type_id', '=', 'relation_types.id')
+                ->select(
+                    'concept_relations.id as relation_id',
+                    'concept_1.id AS concept_id',
+                    'concept_1.name AS concept_name'
+                )
+                ->where('concept_2.id', '=', $concept->id)
+                ->where('concept_relations.fk_relation_type_id', '=', $conceptRelationType)
+                ->get();
 
 
             $merged = array_merge($relatedConcepts1->toArray(), $relatedConcepts2->toArray());

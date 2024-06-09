@@ -1,4 +1,4 @@
-@props(['dictionary', 'parent'])
+@props(['dictionary', 'parent' => null, 'brother' => null])
 
 <x-layout.main>
     <x-slot name="navigation"></x-slot>
@@ -10,7 +10,13 @@
                 <!-- Modal header -->
                 <div class="flex items-center justify-between pb-4 mb-4 border-b rounded-t sm:mb-5 dark:border-gray-600">
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                        @if($brother)
+                        {{ __('Создание нового брата для понятия - «'). $brother->name .'»' }}
+                        @elseif ($parent)
+                        {{ __('Создание нового дочернего для понятия - «'). $parent->name .'»' }}
+                        @else
                         {{ __('Создание нового понятия') }}
+                        @endif
                     </h3>
                     <a href="{{route('dictionary.show', $dictionary)}}" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
                         <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" height="24" width="24">

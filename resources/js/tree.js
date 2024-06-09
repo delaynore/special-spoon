@@ -1,74 +1,169 @@
-document.addEventListener("DOMContentLoaded", function () {
+const TreeView = (() => {
     const treeview = document.querySelector('.treeview');
 
-    function toggleNode(event) {
+    const toggleNode = (event) => {
         const li = event.target.closest('li');
         const ul = li.querySelector('ul');
         if (ul) {
-            ul.classList.toggle('hidden');
-            const isOpen = !ul.classList.contains('hidden');
-            const icon = li.querySelector('.tree-view-icon');
-            const block = li.querySelector('div');
-            if (isOpen) {
-                icon.style.transform = 'rotate(-90deg)';
-                block.classList.add('active');
-            }
-            else {
-                icon.style.transform = '';
-                block.classList.remove('active');
-            }
-
-            const nodeId = li.getAttribute('data-id');
-            sessionStorage.setItem(nodeId, isOpen);
+            const isOpen = toggleElementVisibility(ul);
+            updateNodeAppearance(li, isOpen);
+            saveNodeState(li, isOpen);
         }
-    }
+    };
 
-    function hideNode(toggle) {
+    const hideNode = (toggle, isOpen) => {
         const li = toggle.closest('li');
         const ul = li.querySelector('ul');
         if (ul) {
-            ul.classList.add('hidden');
-            const icon = li.querySelector('.tree-view-icon');
-            const block = li.querySelector('div');
-            icon.style.transform = '';
-            block.classList.remove('active');
-            const nodeId = li.getAttribute('data-id');
-            sessionStorage.setItem(nodeId, false);
+            toggleElementVisibility(ul, isOpen);
+            updateNodeAppearance(li, isOpen);
+            saveNodeState(li, isOpen);
         }
-    }
+    };
 
-    const togglers = treeview.querySelectorAll('.toggle');
-    togglers.forEach(toggle => {
-        toggle.addEventListener('click', toggleNode);
-    });
+    const toggleElementVisibility = (element, isOpen = null) => {
+        if (isOpen !== null) {
+            element.classList.toggle('hidden', !isOpen);
+        } else {
+            element.classList.toggle('hidden');
+        }
+        return !element.classList.contains('hidden');
+    };
 
-    document.getElementById('collapse-concepts').addEventListener('click', () => {
-        togglers.forEach(toggle => {
-            hideNode(toggle);
-        });
-    });
+    const updateNodeAppearance = (li, isOpen) => {
+        const icon = li.querySelector('.tree-view-icon');
+        const block = li.querySelector('div');
+        icon.style.transform = isOpen ? 'rotate(-90deg)' : '';
+        block.classList.toggle('active', isOpen);
+    };
 
-    treeview.querySelectorAll('li[data-id]').forEach(li => {
+    const saveNodeState = (li, isOpen) => {
         const nodeId = li.getAttribute('data-id');
-        const isOpen = sessionStorage.getItem(nodeId) === 'true';
-        const ul = li.querySelector('ul');
-        if (ul && isOpen) {
-            ul.classList.remove('hidden');
-            console.log(nodeId);
-            li.querySelector('.tree-view-icon').style.transform = 'rotate(-90deg)';
-            li.querySelector('div').classList.add('active');
-        }
-    });
+        sessionStorage.setItem(nodeId, isOpen);
+    };
 
-});
-
-window.addEventListener("load", function () {
-    const treeview = document.querySelector('.treeview');
-    treeview.querySelectorAll('div.open-concept').forEach(div => {
-        div.addEventListener('dblclick', (e) => {
-            const route = e.currentTarget.dataset.openConceptRoute;
-            console.log('click', e.currentTarget.dataset);
-            window.location.href = route;
+    const initialize = () => {
+        const togglers = treeview.querySelectorAll('.toggler');
+        togglers.forEach(toggle => {
+            toggle.addEventListener('click', toggleNode);
         });
-    })
+
+        let isOpenG = true;
+        document.getElementById('collapse-concepts').addEventListener('click', () => {
+            isOpenG = !isOpenG;
+            togglers.forEach(toggle => {
+                hideNode(toggle, isOpenG);
+            });
+        });
+
+        treeview.querySelectorAll('li[data-id]').forEach(li => {
+            const nodeId = li.getAttribute('data-id');
+            const isOpen = sessionStorage.getItem(nodeId) === 'true';
+            const ul = li.querySelector('ul');
+            if (ul && isOpen) {
+                ul.classList.remove('hidden');
+                li.querySelector('.tree-view-icon').style.transform = 'rotate(-90deg)';
+                li.querySelector('div').classList.add('active');
+            }
+        });
+    };
+
+    return {
+        initialize
+    };
+})();
+
+const ContextMenu = (() => {
+    const contextmenu = document.getElementById('contextmenu');
+    const treeview = document.querySelector('.treeview');
+    let opened = false;
+    const handleContextMenu = (event, concept) => {
+        if (opened) {
+            contextmenu.classList.add('hidden');
+            opened = false;
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        const title = contextmenu.querySelector('#conctextmenu-title');
+        const createParent = contextmenu.querySelector('#conctextmenu-create-parent');
+        const createBrother = contextmenu.querySelector('#conctextmenu-create-brother');
+        const editConcept = contextmenu.querySelector('#conctextmenu-edit');
+        const deleteConcept = contextmenu.querySelector('#conctextmenu-delete');
+        const openConcept = contextmenu.querySelector('#conctextmenu-open');
+
+        title.textContent = concept.name;
+        createParent.href = concept.parent;
+        createBrother.href = concept.brother;
+        editConcept.href = concept.edit;
+        deleteConcept.action = concept.delete;
+        openConcept.action = concept.open;
+
+        const x = event.pageX;
+        const y = event.pageY;
+        const menuWidth = contextmenu.offsetWidth;
+
+        contextmenu.style.left = x + menuWidth + 'px';
+        contextmenu.style.top = y + 'px';
+        contextmenu.style.right = 'auto';
+        contextmenu.classList.toggle('hidden');
+        opened = true;
+    };
+
+    const initialize = () => {
+        treeview.querySelectorAll('div.open-concept').forEach(div => {
+            div.addEventListener('click', (e) => {
+                const route = e.currentTarget.dataset.openConceptRoute;
+                window.location.href = route;
+            });
+        });
+
+        treeview.querySelectorAll('li[data-el="concept"]').forEach(li => {
+            const concept = {
+                name: li.dataset.name,
+                parent: li.dataset.createParent,
+                brother: li.dataset.createBrother,
+                edit: li.dataset.edit,
+                delete: li.dataset.delete,
+                open: li.dataset.open
+            };
+            const div = li.querySelector('.lidiv');
+            div.addEventListener('contextmenu', (event) => handleContextMenu(event, concept));
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!contextmenu.contains(event.target))
+                contextmenu.classList.add('hidden');
+        });
+        document.addEventListener('contextmenu', (event) => {
+            if (!contextmenu.contains(event.target))
+                contextmenu.classList.add('hidden');
+        });
+    };
+
+    const getConceptFromTarget = (target) => {
+        const li = target.closest('li[data-el="concept"]');
+        if (li) {
+            return {
+                name: li.dataset.name,
+                parent: li.dataset.createParent,
+                brother: li.dataset.createBrother,
+                edit: li.dataset.edit,
+                delete: li.dataset.delete,
+                open: li.dataset.open
+            };
+        }
+        return null;
+    };
+
+    return {
+        initialize
+    };
+})();
+
+// Инициализация модулей
+document.addEventListener("DOMContentLoaded", () => {
+    TreeView.initialize();
+    ContextMenu.initialize();
 });
