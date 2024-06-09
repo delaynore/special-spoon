@@ -86,18 +86,19 @@ const ContextMenu = (() => {
         event.preventDefault();
         event.stopPropagation();
 
-        const title = contextmenu.querySelector('#conctextmenu-title');
-        const createParent = contextmenu.querySelector('#conctextmenu-create-parent');
-        const createBrother = contextmenu.querySelector('#conctextmenu-create-brother');
-        const editConcept = contextmenu.querySelector('#conctextmenu-edit');
-        const deleteConcept = contextmenu.querySelector('#conctextmenu-delete');
-        const openConcept = contextmenu.querySelector('#conctextmenu-open');
-
+        const title = contextmenu.querySelector('#contextmenu-title');
+        const openConcept = contextmenu.querySelector('#contextmenu-open');
+        if(concept.owner === 'true') {
+            const createParent = contextmenu.querySelector('#contextmenu-create-parent');
+            const createBrother = contextmenu.querySelector('#contextmenu-create-brother');
+            const editConcept = contextmenu.querySelector('#contextmenu-edit');
+            const deleteConcept = contextmenu.querySelector('#contextmenu-delete');
+            createParent.href = concept.parent;
+            createBrother.href = concept.brother;
+            editConcept.href = concept.edit;
+            deleteConcept.action = concept.delete;
+        }
         title.textContent = concept.name;
-        createParent.href = concept.parent;
-        createBrother.href = concept.brother;
-        editConcept.href = concept.edit;
-        deleteConcept.action = concept.delete;
         openConcept.action = concept.open;
 
         const x = event.pageX;
@@ -126,7 +127,8 @@ const ContextMenu = (() => {
                 brother: li.dataset.createBrother,
                 edit: li.dataset.edit,
                 delete: li.dataset.delete,
-                open: li.dataset.open
+                open: li.dataset.open,
+                owner: li.dataset.owner
             };
             const div = li.querySelector('.lidiv');
             div.addEventListener('contextmenu', (event) => handleContextMenu(event, concept));
@@ -140,21 +142,6 @@ const ContextMenu = (() => {
             if (!contextmenu.contains(event.target))
                 contextmenu.classList.add('hidden');
         });
-    };
-
-    const getConceptFromTarget = (target) => {
-        const li = target.closest('li[data-el="concept"]');
-        if (li) {
-            return {
-                name: li.dataset.name,
-                parent: li.dataset.createParent,
-                brother: li.dataset.createBrother,
-                edit: li.dataset.edit,
-                delete: li.dataset.delete,
-                open: li.dataset.open
-            };
-        }
-        return null;
     };
 
     return {

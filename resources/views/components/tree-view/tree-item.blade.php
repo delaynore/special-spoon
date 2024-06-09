@@ -4,6 +4,7 @@ $children = $concept->children()->get();
 @endphp
 
 <li data-el="concept" data-id="concept-{{$concept->id}}" class="cursor-pointer"
+data-owner="{{$dictionary->fk_user_id === auth()->user()->id ? 'true' : 'false'}}"
 data-name="{{$concept->name}}"
 data-create-parent="{{route('concept.create', ['dictionary' => $dictionary, 'parentId' => $concept->id])}}"
 data-create-brother="{{route('concept.create', ['dictionary' => $dictionary, 'parentId' => $concept->fk_parent_concept_id, 'brotherId' => $concept->id])}}"
