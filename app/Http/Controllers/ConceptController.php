@@ -64,7 +64,7 @@ class ConceptController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $dictionary, string $concept)
+    public function show(string $dictionary, string $concept, int $page = 0)
     {
         $concept = Concept::findOrFail($concept);
         $dictionary = Dictionary::findOrFail($dictionary);
@@ -111,7 +111,7 @@ class ConceptController extends Controller
             ]);
         }
 
-        return view('concept.show', compact('concept', 'dictionary', 'concepts', 'conceptRelations'));
+        return view('concept.show', compact('concept', 'dictionary', 'concepts', 'conceptRelations', 'page'));
     }
 
     /**
