@@ -48,11 +48,24 @@ const TreeView = (() => {
             toggle.addEventListener('click', toggleNode);
         });
 
-        let isOpenG = true;
+
+        let isOpenNow  = true;
+        for (let i = 0; i < sessionStorage.length; i++) {
+            const key = sessionStorage.key(i);
+            const value = sessionStorage.getItem(key);
+
+            if(key.startsWith('concept-') && value === 'false') {
+                isOpenNow = false;
+                break;
+            }
+          }
+
         document.getElementById('collapse-concepts').addEventListener('click', () => {
-            isOpenG = !isOpenG;
+
+            isOpenNow = !isOpenNow;
+
             togglers.forEach(toggle => {
-                hideNode(toggle, isOpenG);
+                hideNode(toggle, isOpenNow);
             });
         });
 
@@ -75,6 +88,7 @@ const TreeView = (() => {
 
 const ContextMenu = (() => {
     const contextmenu = document.getElementById('contextmenu');
+    const deleteModal = document.getElementById('deleteModalConcept');
     const treeview = document.querySelector('.treeview');
     let opened = false;
     const handleContextMenu = (event, concept) => {
@@ -92,7 +106,10 @@ const ContextMenu = (() => {
             const createParent = contextmenu.querySelector('#contextmenu-create-parent');
             const createBrother = contextmenu.querySelector('#contextmenu-create-brother');
             const editConcept = contextmenu.querySelector('#contextmenu-edit');
-            const deleteConcept = contextmenu.querySelector('#contextmenu-delete');
+            const deleteConcept = deleteModal.querySelector('#contextmenu-delete');
+            const descriptionDelete = deleteModal.querySelector('#description');
+
+            descriptionDelete.textContent = "Вы действительно хотите удалить понятие \"" + concept.name + "\"?" + "Все дочерние понятия будут удалены.";
             createParent.href = concept.parent;
             createBrother.href = concept.brother;
             editConcept.href = concept.edit;

@@ -58,7 +58,7 @@ class ConceptController extends Controller
 
         $concept->saveOrFail();
 
-        return redirect()->route('dictionary.show', $dictionaryId);
+        return redirect()->route('concept.show', ['dictionary' => $dictionaryId, 'concept' => $concept->id])->with('success', __('dashboard.sidebar.concepts.messages.created'));
     }
 
     /**
@@ -161,7 +161,7 @@ class ConceptController extends Controller
         ]);
 
 
-        return redirect(route('concept.show', compact('dictionary', 'concept')))->with('success', "Понятие успешно изменено!");
+        return redirect(route('concept.show', compact('dictionary', 'concept')))->with('success', __('dashboard.sidebar.concepts.messages.updated'));
     }
 
     /**
@@ -174,7 +174,7 @@ class ConceptController extends Controller
 
         $concept->deleteOrFail();
 
-        return redirect()->back()->with('success', 'Concept deleted.');
+        return redirect()->back()->with('success', __('dashboard.sidebar.concepts.messages.deleted'));
     }
 
     public function examples(string $dictionary, string $concept)
