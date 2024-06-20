@@ -48,11 +48,24 @@ const TreeView = (() => {
             toggle.addEventListener('click', toggleNode);
         });
 
-        let isOpenG = true;
+
+        let isOpenNow  = true;
+        for (let i = 0; i < sessionStorage.length; i++) {
+            const key = sessionStorage.key(i);
+            const value = sessionStorage.getItem(key);
+
+            if(key.startsWith('concept-') && value === 'false') {
+                isOpenNow = false;
+                break;
+            }
+          }
+
         document.getElementById('collapse-concepts').addEventListener('click', () => {
-            isOpenG = !isOpenG;
+
+            isOpenNow = !isOpenNow;
+
             togglers.forEach(toggle => {
-                hideNode(toggle, isOpenG);
+                hideNode(toggle, isOpenNow);
             });
         });
 
