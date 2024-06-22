@@ -173,14 +173,12 @@ class DictionaryController extends Controller
 
     public function export(string $id)
     {
-
-        $dictionary = Dictionary::where('fk_user_id', '=', auth()->user()->id)->findOrFail($id);
-
+        $dictionary = Dictionary::find($id);
         Gate::authorize('export-dictionary', $dictionary);
 
         $concepts = $dictionary->concepts()->pluck('name');
         if (count($concepts) == 0) {
-            return redirect()->back()->with('export.error', 'В словаре нет понятий');
+            return redirect()->back()->with('error', 'В словаре нет понятий');
         }
         $conceptsString = '';
         foreach ($concepts as $concept) {
