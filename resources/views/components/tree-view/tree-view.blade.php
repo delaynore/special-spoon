@@ -79,7 +79,7 @@
         </div>
     @endcan
 </div>
-
+@can('must-be-owner', $dictionary)
 <div id="deleteModalConcept" tabindex="-1" aria-hidden="true"
     class="fixed top-0 left-0 right-0 z-50 items-center justify-center hidden w-full overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
     <div class="relative w-full h-full max-w-md p-4 md:h-auto">
@@ -119,7 +119,7 @@
         </div>
     </div>
 </div>
-</div>
+@endcan
 
 
 @vite(['resources/js/tree.js'])

@@ -80,7 +80,7 @@
                     <div class="grid gap-4 mb-4">
                         <div class="col-span-2">
                             <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file">{{ __('attachment-page.create.file.label')}}</label>
-                            <input accept=".txt,.csv" name="file" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file" type="file">
+                            <input accept=".txt,.csv" value="{{ old('file') }}" name="file" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file" type="file">
                             <x-input-error :messages="$errors->get('file')" class="mt-2" />
                             <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">{{ __('import.available-file-types') }}</p>
                         </div>

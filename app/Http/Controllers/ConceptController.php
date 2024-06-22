@@ -6,6 +6,7 @@ use App\Models\Concept;
 use App\Models\ConceptRelation;
 use App\Models\Dictionary;
 use App\Models\RelationType;
+use App\Rules\UniqueWithoutCaseConcepts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
@@ -43,22 +44,35 @@ class ConceptController extends Controller
     {
         $dictionary = Dictionary::findOrFail($dictionaryId);
         Gate::authorize('must-be-owner', $dictionary);
+
         $validated = $request->validate([
-            'name' => ['required', 'max:255'],
+            'name' => [
+                'required',
+                'max:255',
+            ],
             'definition' => 'max:10000',
             'fk_parent_concept_id' => ['uuid', Rule::in(Dictionary::find($dictionaryId)->concepts()->pluck('id'))],
+        ]);
+
+        $request->validate([
+            'name' => [
+            new UniqueWithoutCaseConcepts([
+                'fk_dictionary_id' => $dictionaryId,
+                'fk_parent_concept_id' => $validated['fk_parent_concept_id'] ?? null,
+            ])]
         ]);
 
         $concept = new Concept([
             'name' => $validated['name'],
             'definition' => $request['definition'],
             'fk_dictionary_id' => $dictionaryId,
-            'fk_parent_concept_id' =>  $request['fk_parent_concept_id'],
+            'fk_parent_concept_id' => $request['fk_parent_concept_id'],
         ]);
 
         $concept->saveOrFail();
 
-        return redirect()->route('concept.show', ['dictionary' => $dictionaryId, 'concept' => $concept->id])->with('success', __('dashboard.sidebar.concepts.messages.created'));
+        return redirect(route('concept.show', ['dictionary' => $dictionaryId, 'concept' => $concept->id]))
+            ->with('success', __('dashboard.sidebar.concepts.messages.created'));
     }
 
     /**
@@ -111,7 +125,10 @@ class ConceptController extends Controller
             ]);
         }
 
-        return view('concept.show', compact('concept', 'dictionary', 'concepts', 'conceptRelations', 'page'));
+        return view(
+            'concept.show',
+            compact('concept', 'dictionary', 'concepts', 'conceptRelations', 'page')
+        );
     }
 
     /**
@@ -133,6 +150,13 @@ class ConceptController extends Controller
             'name' => ['required', 'max:255'],
             'definition' => 'max:10000',
             'parent' => [Rule::excludeIf(empty($request->input('parent'))), 'uuid', Rule::in($dictionary->concepts->pluck('id'))],
+        ]);
+        $request->validate([
+            'name' => [
+            new UniqueWithoutCaseConcepts([
+                'fk_dictionary_id' => $dictionary->id,
+                'fk_parent_concept_id' => $validated['parent'] ?? null,
+            ])]
         ]);
 
         if (in_array('parent', $validated)) {
@@ -161,7 +185,8 @@ class ConceptController extends Controller
         ]);
 
 
-        return redirect(route('concept.show', compact('dictionary', 'concept')))->with('success', __('dashboard.sidebar.concepts.messages.updated'));
+        return redirect(route('concept.show', compact('dictionary', 'concept')))
+            ->with('success', __('dashboard.sidebar.concepts.messages.updated'));
     }
 
     /**
@@ -174,7 +199,8 @@ class ConceptController extends Controller
 
         $concept->deleteOrFail();
 
-        return redirect()->back()->with('success', __('dashboard.sidebar.concepts.messages.deleted'));
+        return redirect(route('dictionary.show', ['dictionary' => $dictionaryId]))
+            ->with('success', __('dashboard.sidebar.concepts.messages.deleted'));
     }
 
     public function examples(string $dictionary, string $concept)
@@ -191,6 +217,9 @@ class ConceptController extends Controller
         $concept = Concept::findOrFail($concept);
         $dictionary = Dictionary::findOrFail($dictionary);
         $attachments = $concept->attachements()->get();
-        return view('components.dashboard.tabs.attachments', compact('dictionary', 'concept', 'concepts', 'attachments'));
+        return view(
+            'components.dashboard.tabs.attachments',
+            compact('dictionary', 'concept', 'concepts', 'attachments')
+        );
     }
 }

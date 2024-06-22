@@ -53,6 +53,7 @@ Route::middleware(['auth'])->group(function () {
             // import
             Route::get('concept/{concept}/import', [ImportExamplesController::class, 'create'])->name('import.create');
             Route::post('concept/{concept}/import', [ImportExamplesController::class, 'store'])->name('import.store');
+            Route::get('concept/{concept}/export', [ImportExamplesController::class, 'export'])->name('import.export');
 
             Route::put('concept/{concept}', [ConceptController::class, 'update'])->name('concept.update');
             Route::get('concept/{concept}', [ConceptController::class, 'edit'])->name('concept.edit');
