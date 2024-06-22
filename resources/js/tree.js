@@ -109,7 +109,7 @@ const ContextMenu = (() => {
             const deleteConcept = deleteModal.querySelector('#contextmenu-delete');
             const descriptionDelete = deleteModal.querySelector('#description');
 
-            descriptionDelete.textContent = "Вы действительно хотите удалить понятие \"" + concept.name + "\"?" + "Все дочерние понятия будут удалены.";
+            descriptionDelete.textContent = "Вы действительно хотите удалить понятие «"+ concept.name + "»? Все дочерние понятия будут удалены.";
             createParent.href = concept.parent;
             createBrother.href = concept.brother;
             editConcept.href = concept.edit;
