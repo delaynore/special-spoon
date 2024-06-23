@@ -99,10 +99,8 @@ class ImportExamplesController extends Controller
         return response()
             ->download(Storage::disk('local')->path($fileName), $fileName, ['Content-Type' => 'text/plain'])
             ->deleteFileAfterSend(true);
-    }
-
-
-
+    } 
+  
     /**
      * Store a newly created resource in storage.
      */
