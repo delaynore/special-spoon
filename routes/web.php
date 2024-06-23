@@ -11,19 +11,29 @@ use App\Http\Controllers\ImportExamplesController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RelationTypeController;
 use App\Http\Controllers\TagController;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/home', '/');
 
 Route::get('/', function (Request $request) {
+    $query = \App\Models\Dictionary::where('visibility', '=', 'public');
+
     if (request('search')) {
-        $dictionaries = \App\Models\Dictionary::where('visibility', '=', 'public')->where('name', 'ilike', '%' . request('search') . '%')->paginate(15);
-    } else {
-        $dictionaries = \App\Models\Dictionary::allAvailable()->paginate(15);
+        $query->where('name', 'ilike', '%' . request('search') . '%');
     }
 
-    return view('components.pages.home', compact('dictionaries'));
+    if (request('tag')) {
+        $tag = request('tag');
+        $query->whereHas('tags', function ($query) use ($tag) {
+            $query->where('name', $tag);
+        });
+    }
+
+    $dictionaries = $query->paginate(15);
+    $tags = Tag::all();
+    return view('components.pages.home', compact('dictionaries', 'tags'));
 })->name('home');
 
 Route::middleware(['auth'])->group(function () {
