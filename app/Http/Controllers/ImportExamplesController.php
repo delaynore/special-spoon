@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\File;
+use SplFileObject;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ImportExamplesController extends Controller
 {
@@ -39,22 +41,28 @@ class ImportExamplesController extends Controller
 
     public function export(Dictionary $dictionary, Concept $concept)
     {
-        $dictionary = Dictionary::find($dictionary->id);
         Gate::authorize('export-dictionary', $dictionary);
 
-        $attributes = Attribute::join('concept_attributes', 'attributes.id', '=', 'concept_attributes.fk_attribute_id')->where('concept_attributes.fk_concept_id', $concept->id)
+        $attributes = Attribute::join('concept_attributes', 'attributes.id', '=', 'concept_attributes.fk_attribute_id')
+            ->where('concept_attributes.fk_concept_id', $concept->id)
             ->selectRaw('attributes.name')
             ->orderBy('concept_attributes.created_at')
             ->get();
+
         $attributesCount = $attributes->count();
-        $fileContent = "";
+
+        $fileName = $concept->name . '-examples.csv';
+        $file = fopen(Storage::disk('local')->path($fileName), 'w');
+
+        $header = "";
         foreach ($attributes as $n => $attribute) {
-            $fileContent .= $attribute->name;
+            $header .= $attribute->name;
             if ($n != $attributesCount - 1) {
-                $fileContent .= ";";
+                $header .= ";";
             }
         }
-        $fileContent .= "\n";
+        $header .= "\n";
+        fwrite($file, $header);
 
         $exampleNumbers = ConceptAttributeValue::join('concept_attributes', 'concept_attribute_values.fk_concept_attribute_id', '=', 'concept_attributes.id')
             ->join('concepts', 'concept_attributes.fk_concept_id', '=', 'concepts.id')
@@ -65,7 +73,7 @@ class ImportExamplesController extends Controller
             ->pluck('example_number');
 
         foreach ($exampleNumbers as $exampleNumber) {
-            $results = ConceptAttributeValue::join('concept_attributes', 'concept_attribute_values.fk_concept_attribute_id', '=', 'concept_attributes.id')
+            ConceptAttributeValue::join('concept_attributes', 'concept_attribute_values.fk_concept_attribute_id', '=', 'concept_attributes.id')
                 ->join('concepts', 'concept_attributes.fk_concept_id', '=', 'concepts.id')
                 ->join('attributes', 'concept_attributes.fk_attribute_id', '=', 'attributes.id')
                 ->where('concept_attributes.fk_concept_id', $concept->id)
@@ -73,23 +81,27 @@ class ImportExamplesController extends Controller
                 ->selectRaw('concept_attribute_values.value')
                 ->orderBy('concept_attribute_values.example_number')
                 ->orderBy('concept_attributes.created_at')
-                ->pluck('value');
-
-            foreach ($results as $ex => $value) {
-                $fileContent .= $value;
-                if ($ex != $attributesCount - 1) {
-                    $fileContent .= ";";
-                }
-            }
-            $fileContent .= "\n";
+                ->chunk(100, function ($results) use (&$file, $attributesCount) {
+                    $line = "";
+                    foreach ($results as $ex => $value) {
+                        $line .= $value->value;
+                        if ($ex != $attributesCount - 1) {
+                            $line .= ";";
+                        }
+                    }
+                    $line .= "\n";
+                    fwrite($file, $line);
+                });
         }
 
-        $fileName = $concept->name . '-examples.csv';
-        Storage::disk('local')->put($fileName, $fileContent);
+        fclose($file);
+
         return response()
             ->download(Storage::disk('local')->path($fileName), $fileName, ['Content-Type' => 'text/plain'])
             ->deleteFileAfterSend(true);
     }
+
+
 
     /**
      * Store a newly created resource in storage.
