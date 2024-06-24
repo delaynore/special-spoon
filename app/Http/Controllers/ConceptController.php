@@ -56,10 +56,11 @@ class ConceptController extends Controller
 
         $request->validate([
             'name' => [
-            new UniqueWithoutCaseConcepts([
-                'fk_dictionary_id' => $dictionaryId,
-                'fk_parent_concept_id' => $validated['fk_parent_concept_id'] ?? null,
-            ])]
+                new UniqueWithoutCaseConcepts([
+                    'fk_dictionary_id' => $dictionaryId,
+                    'fk_parent_concept_id' => $validated['fk_parent_concept_id'] ?? null,
+                ])
+            ]
         ]);
 
         $concept = new Concept([
@@ -153,10 +154,16 @@ class ConceptController extends Controller
         ]);
         $request->validate([
             'name' => [
-            new UniqueWithoutCaseConcepts([
-                'fk_dictionary_id' => $dictionary->id,
-                'fk_parent_concept_id' => $validated['parent'] ?? null,
-            ])]
+                new UniqueWithoutCaseConcepts(
+                    [
+                        'fk_dictionary_id' => $dictionary->id,
+                        'fk_parent_concept_id' => $validated['parent'] ?? null,
+                    ],
+                    [
+                        'id' => $concept->id,
+                    ]
+                )
+            ]
         ]);
 
         if (in_array('parent', $validated)) {
